@@ -57,6 +57,7 @@ requirements:
     - pip
     - assimp
     - eigen
+    - embree
     - glew
     - glfw
     # fmt 10 results in build error
