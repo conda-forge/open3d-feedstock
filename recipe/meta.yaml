@@ -87,7 +87,7 @@ requirements:
     # - imgui      # Not used currently as we are not building the GUI
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
     - libcurl
-    # - openssl
+    - openssl  # [osx]
     # - tbb-devel  # conda-forge version too new; no oneTBB support yet; see https://github.com/isl-org/Open3D/issues/6544
   run:
     - numpy
