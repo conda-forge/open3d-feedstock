@@ -16,7 +16,7 @@ source:
     - fix-find-imgui.patch
     - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
-    - fix-framework.patch  # [arm64]
+    - fix-crypto.patch  # [osx]
 
 build:
   number: 1
@@ -86,8 +86,8 @@ requirements:
     - liblzf
     # - imgui      # Not used currently as we are not building the GUI
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
-    - libcurl    # does not like the conda-forge version, results in linker error
-    - openssl    # does not like the conda-forge version, results in linker error
+    - libcurl
+    - openssl
     # - tbb-devel  # conda-forge version too new; no oneTBB support yet; see https://github.com/isl-org/Open3D/issues/6544
   run:
     - numpy
