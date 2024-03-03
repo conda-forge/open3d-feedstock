@@ -1,0 +1,13 @@
+diff --git a/cpp/open3d/CMakeLists.txt b/cpp/open3d/CMakeLists.txt
+index 6da3581e509..2492bdfae7d 100644
+--- a/cpp/open3d/CMakeLists.txt
++++ b/cpp/open3d/CMakeLists.txt
+@@ -82,6 +82,8 @@ target_sources(Open3D PRIVATE
+     Open3DConfig.cpp
+ )
+ 
++target_link_libraries(Open3D "-framework Security")
++
+ open3d_ispc_target_sources_TARGET_OBJECTS(Open3D PRIVATE
+     camera
+     core
