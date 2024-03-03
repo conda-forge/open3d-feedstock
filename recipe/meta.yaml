@@ -16,6 +16,7 @@ source:
     - fix-find-imgui.patch
     - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
+    - fix-framework.patch  # [arm64]
 
 build:
   number: 1
