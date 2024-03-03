@@ -15,6 +15,7 @@ source:
     - fix-error.patch
     - fix-find-imgui.patch
     - fix-find-embree.patch
+    - fix-cross-compile-shader.patch  # [build_platform != target_platform]
 
 build:
   number: 1
@@ -34,8 +35,8 @@ requirements:
     - cmake
     - make
     - pkg-config
-    - llvm-openmp  # [osx]
-    - libgomp      # [linux]
+    - llvm-openmp                            # [osx]
+    - libgomp                                # [linux]
     - {{ cdt('mesa-libgl-devel') }}          # [linux]
     - {{ cdt('mesa-dri-drivers') }}          # [linux]
     - {{ cdt('mesa-libegl-devel') }}         # [linux]
