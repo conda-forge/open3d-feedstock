@@ -1,8 +1,38 @@
 set -euxo pipefail
 
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
+  (
+    mkdir -p build-host
+    pushd build-host
+
+    export CC=$CC_FOR_BUILD
+    export CXX=$CXX_FOR_BUILD
+    export LDFLAGS=${LDFLAGS//$PREFIX/$BUILD_PREFIX}
+    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH//$PREFIX/$BUILD_PREFIX}
+
+    # Unset them as we're ok with builds that are either slow or non-portable
+    unset CFLAGS
+    unset CXXFLAGS
+
+    cmake ${SRC_DIR} \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_PREFIX_PATH=$BUILD_PREFIX -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=True
+    # No need to compile everything, just gazebomsgs_out is sufficient
+    cmake --build . --target ShaderEncoder --parallel ${CPU_COUNT} --config Release
+    cmake --build . --target ShaderLinker --parallel ${CPU_COUNT} --config Release
+  )
+fi
+
 rm -rf build || true
 mkdir build
 cd build
+
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
+  export CMAKE_ARGS="${CMAKE_ARGS} -DSHADER_ENCODER_PATH:STRING=`pwd`/../build-host/bin/ShaderEncoder"
+  export CMAKE_ARGS="${CMAKE_ARGS} -DSHADER_LINKER_PATH:STRING=`pwd`/../build-host/bin/ShaderLinker"
+fi
 
 cmake ${SRC_DIR} ${CMAKE_ARGS} \
     -DBUILD_AZURE_KINECT=OFF \
@@ -24,8 +54,9 @@ cmake ${SRC_DIR} ${CMAKE_ARGS} \
     -DUSE_BLAS=ON \
     -DUSE_SYSTEM_ASSIMP=ON \
     -DUSE_SYSTEM_BLAS=ON \
-    -DUSE_SYSTEM_CURL=OFF \
+    -DUSE_SYSTEM_CURL=ON \
     -DUSE_SYSTEM_EIGEN3=ON \
+    -DUSE_SYSTEM_EMBREE=ON \
     -DUSE_SYSTEM_FMT=ON \
     -DUSE_SYSTEM_GLEW=ON \
     -DUSE_SYSTEM_GLFW=ON \
@@ -37,7 +68,7 @@ cmake ${SRC_DIR} ${CMAKE_ARGS} \
     -DUSE_SYSTEM_LIBREALSENSE=OFF \
     -DUSE_SYSTEM_MSGPACK=ON \
     -DUSE_SYSTEM_NANOFLANN=ON \
-    -DUSE_SYSTEM_OPENSSL=OFF \
+    -DUSE_SYSTEM_OPENSSL=ON \
     -DUSE_SYSTEM_PNG=ON \
     -DUSE_SYSTEM_PYBIND11=ON \
     -DUSE_SYSTEM_QHULLCPP=ON \

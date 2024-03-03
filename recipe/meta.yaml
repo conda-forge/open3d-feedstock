@@ -14,9 +14,12 @@ source:
     - fix-curl.patch
     - fix-error.patch
     - fix-find-imgui.patch
+    - fix-find-embree.patch
+    - fix-cross-compile-shader.patch  # [build_platform != target_platform]
+    - fix-crypto.patch  # [osx]
 
 build:
-  number: 0
+  number: 1
   skip: True  # [win]
   ignore_run_exports_from:
     - libcblas
@@ -33,8 +36,8 @@ requirements:
     - cmake
     - make
     - pkg-config
-    - llvm-openmp  # [osx]
-    - libgomp      # [linux]
+    - llvm-openmp                            # [osx]
+    - libgomp                                # [linux]
     - {{ cdt('mesa-libgl-devel') }}          # [linux]
     - {{ cdt('mesa-dri-drivers') }}          # [linux]
     - {{ cdt('mesa-libegl-devel') }}         # [linux]
@@ -57,6 +60,7 @@ requirements:
     - pip
     - assimp
     - eigen
+    - embree 3.*
     - glew
     - glfw
     # fmt 10 results in build error
@@ -70,7 +74,7 @@ requirements:
     - msgpack-cxx
     - minizip
     - vtk
-    - libidn2  # [osx]
+    # - libidn2  # [osx]
     - libpng
     - pybind11
     - qhull
@@ -82,14 +86,15 @@ requirements:
     - liblzf
     # - imgui      # Not used currently as we are not building the GUI
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
-    # - libcurl    # does not like the conda-forge version, results in linker error
-    # - openssl    # does not like the conda-forge version, results in linker error
+    - libcurl
+    - openssl  # [osx]
     # - tbb-devel  # conda-forge version too new; no oneTBB support yet; see https://github.com/isl-org/Open3D/issues/6544
   run:
     - numpy
     - python
     - plotly
     - dash
+    - embree 3.*
 
 test:
   imports:
@@ -110,9 +115,6 @@ about:
     - 3rdparty/parallelstl/LICENSE
     - 3rdparty/possionrecon/LICENSE
     - 3rdparty/rply/LICENSE
-    - 3rdparty/curl/LICENSE
-    - 3rdparty/boringssl/LICENSE
-    - 3rdparty/embree/LICENSE
     - 3rdparty/tinyfiledialogs/LICENSE
     - 3rdparty/tinygltf/LICENSE
   dev_url: https://github.com/isl-org/Open3D

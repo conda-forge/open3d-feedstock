@@ -1,0 +1,12 @@
+diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
+index 169bfbe1a54..033f65ec9b2 100644
+--- a/3rdparty/find_dependencies.cmake
++++ b/3rdparty/find_dependencies.cmake
+@@ -1884,6 +1884,7 @@ endif ()
+ if(USE_SYSTEM_EMBREE)
+     open3d_find_package_3rdparty_library(3rdparty_embree
+         PACKAGE embree
++        VERSION 3.13.0
+         TARGETS embree
+     )
+     if(NOT 3rdparty_embree_FOUND)
