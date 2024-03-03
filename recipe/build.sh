@@ -1,6 +1,6 @@
 set -euxo pipefail
 
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
   (
     mkdir -p build-host
     pushd build-host
@@ -29,7 +29,7 @@ rm -rf build || true
 mkdir build
 cd build
 
-if [[ "${CONDA_BUILD_CROSS_COMPILATION}" == "1" ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
   export CMAKE_ARGS="${CMAKE_ARGS} -DSHADER_ENCODER_PATH:STRING=`pwd`/../build-host/bin/ShaderEncoder"
   export CMAKE_ARGS="${CMAKE_ARGS} -DSHADER_LINKER_PATH:STRING=`pwd`/../build-host/bin/ShaderLinker"
 fi
