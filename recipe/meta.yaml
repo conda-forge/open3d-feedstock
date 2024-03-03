@@ -93,6 +93,7 @@ requirements:
     - python
     - plotly
     - dash
+    - embree 3.*
 
 test:
   imports:
