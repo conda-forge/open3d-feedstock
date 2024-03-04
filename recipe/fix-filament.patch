@@ -1,0 +1,35 @@
+diff --git a/3rdparty/filament/filament_build.cmake b/3rdparty/filament/filament_build.cmake
+index cf2d650530e..ba1cdd306d9 100644
+--- a/3rdparty/filament/filament_build.cmake
++++ b/3rdparty/filament/filament_build.cmake
+@@ -56,6 +56,9 @@ ExternalProject_Add(
+     URL_HASH SHA256=00c3f41af0fcfb2df904e1f77934f2678d943ddac5eb889788a5e22590e497bd
+     DOWNLOAD_DIR "${OPEN3D_THIRD_PARTY_DOWNLOAD_DIR}/filament"
+     UPDATE_COMMAND ""
++    PATCH_COMMAND ${GIT_EXECUTABLE} init
++    COMMAND ${GIT_EXECUTABLE} apply --ignore-space-change --ignore-whitespace
++        ${CMAKE_CURRENT_LIST_DIR}/fix-ranlib-args.patch
+     CMAKE_ARGS
+         ${ExternalProject_CMAKE_ARGS}
+         -DCMAKE_BUILD_TYPE=${FILAMENT_BUILD_TYPE}
+diff --git a/3rdparty/filament/fix-ranlib-args.patch b/3rdparty/filament/fix-ranlib-args.patch
+new file mode 100644
+index 00000000000..394a0cbe363
+--- /dev/null
++++ b/3rdparty/filament/fix-ranlib-args.patch
+@@ -0,0 +1,15 @@
++diff --git a/CMakeLists.txt b/CMakeLists.txt
++index 91ab2922d83..a62d702ea8c 100644
++--- a/CMakeLists.txt
+++++ b/CMakeLists.txt
++@@ -460,8 +460,8 @@ if (APPLE)
++     set(B_SYMBOLIC_FUNCTIONS "")
++ 
++     # tell ranlib to ignore empty compilation units
++-    set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
++-    set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
+++    # set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
+++    # set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
++     # prevents ar from invoking ranlib, let CMake do it
++     set(CMAKE_C_ARCHIVE_CREATE   "<CMAKE_AR> qc -S <TARGET> <LINK_FLAGS> <OBJECTS>")
++     set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qc -S <TARGET> <LINK_FLAGS> <OBJECTS>")
