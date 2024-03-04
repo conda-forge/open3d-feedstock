@@ -19,6 +19,7 @@ source:
     - fix-cross-compile-lapacke.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
     - fix-clang-libdir.patch
+    - fix-filament.patch
 
 build:
   number: 2
