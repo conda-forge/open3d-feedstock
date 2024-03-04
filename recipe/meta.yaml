@@ -92,6 +92,8 @@ requirements:
     - libcurl
     - clangdev
     - libclang
+    - libcxx
+    - libcxx-abi
     - openssl  # [osx]
     - gtest
     - gmock
