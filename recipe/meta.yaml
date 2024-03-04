@@ -81,6 +81,7 @@ requirements:
     - qhull
     - tinyobjloader
     - libcblas
+    - liblapack
     - liblapacke
     - libboost-headers
     - nanoflann
