@@ -16,6 +16,7 @@ source:
     - fix-find-imgui.patch
     - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
+    - fix-cross-compile-lapacke.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
     - fix-clang-libdir.patch
 
