@@ -19,7 +19,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
       -DCMAKE_PREFIX_PATH=$BUILD_PREFIX -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=True
-    # No need to compile everything, just gazebomsgs_out is sufficient
+    # No need to compile everything, just Shader executables is sufficient
     cmake --build . --target ShaderEncoder --parallel ${CPU_COUNT} --config Release
     cmake --build . --target ShaderLinker --parallel ${CPU_COUNT} --config Release
   )
