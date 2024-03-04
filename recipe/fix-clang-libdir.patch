@@ -1,0 +1,13 @@
+diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
+index 169bfbe1a54..eb10871136d 100644
+--- a/3rdparty/find_dependencies.cmake
++++ b/3rdparty/find_dependencies.cmake
+@@ -1282,7 +1282,7 @@ if(BUILD_GUI)
+                 # version.
+                 execute_process(COMMAND ${FILAMENT_CXX_COMPILER} --version OUTPUT_VARIABLE clang_version)
+                 if(clang_version MATCHES "clang version ([0-9]+)")
+-                    set(CLANG_LIBDIR "/usr/lib/llvm-${CMAKE_MATCH_1}/lib")
++                    set(CLANG_LIBDIR "/usr/lib/llvm-${CMAKE_MATCH_1}/lib" CACHE PATH "Path to Clang libdir")
+                 endif()
+             endif()
+             include(${Open3D_3RDPARTY_DIR}/filament/filament_build.cmake)
