@@ -94,7 +94,7 @@ requirements:
     - clangdev
     - libclang
     - libcxx
-    - libcxx-abi
+    - libcxxabi
     - openssl  # [osx]
     - gtest
     - gmock
