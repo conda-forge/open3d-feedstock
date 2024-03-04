@@ -94,6 +94,7 @@ requirements:
     - libclang
     - openssl  # [osx]
     - gtest
+    - gmock
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
     # - tbb-devel  # conda-forge version too new; no oneTBB support yet; see https://github.com/isl-org/Open3D/issues/6544
   run:
