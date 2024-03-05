@@ -22,7 +22,7 @@ index 00000000000..394a0cbe363
 +index 91ab2922d83..a62d702ea8c 100644
 +--- a/CMakeLists.txt
 ++++ b/CMakeLists.txt
-+@@ -460,8 +460,8 @@ if (APPLE)
++@@ -342,8 +342,8 @@ if (APPLE)
 +     set(B_SYMBOLIC_FUNCTIONS "")
 + 
 +     # tell ranlib to ignore empty compilation units
