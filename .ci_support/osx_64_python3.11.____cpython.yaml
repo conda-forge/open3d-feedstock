@@ -24,8 +24,6 @@ libcblas:
 - 3.9 *netlib
 libcurl:
 - '8'
-libidn2:
-- '2'
 libjpeg_turbo:
 - '3'
 liblapacke:
