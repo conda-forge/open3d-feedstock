@@ -39,6 +39,7 @@ requirements:
     - cmake
     - make
     - pkg-config
+    - git
     - llvm-openmp                            # [osx]
     - libgomp                                # [linux]
     - {{ cdt('mesa-libgl-devel') }}          # [linux]
