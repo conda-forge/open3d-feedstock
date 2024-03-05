@@ -1,5 +1,5 @@
 diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
-index 169bfbe1a54..106bd513342 100644
+index 169bfbe1a..106bd5133 100644
 --- a/3rdparty/find_dependencies.cmake
 +++ b/3rdparty/find_dependencies.cmake
 @@ -1216,75 +1216,6 @@ if(BUILD_GUI)
