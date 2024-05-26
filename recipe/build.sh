@@ -19,7 +19,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
       -DCMAKE_PREFIX_PATH=$BUILD_PREFIX -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=True
-    # No need to compile everything, just gazebomsgs_out is sufficient
+    # No need to compile everything, just Shader executables is sufficient
     cmake --build . --target ShaderEncoder --parallel ${CPU_COUNT} --config Release
     cmake --build . --target ShaderLinker --parallel ${CPU_COUNT} --config Release
   )
@@ -35,18 +35,23 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
 fi
 
 cmake ${SRC_DIR} ${CMAKE_ARGS} \
+    -DCLANG_LIBDIR=${PREFIX}/lib \
+    -DLAPACKE_WORKS=ON \
     -DBUILD_AZURE_KINECT=OFF \
+    -DBUILD_BENCHMARKS=OFF \
     -DBUILD_CUDA_MODULE=OFF \
     -DBUILD_COMMON_CUDA_ARCHS=OFF \
     -DBUILD_CACHED_CUDA_MANAGER=OFF \
     -DBUILD_EXAMPLES=OFF \
     -DBUILD_ISPC_MODULE=OFF \
-    -DBUILD_GUI=OFF \
+    -DBUILD_FILAMENT_FROM_SOURCE=ON \
+    -DBUILD_GUI=ON \
     -DBUILD_LIBREALSENSE=OFF \
     -DBUILD_PYTORCH_OPS=OFF \
     -DBUILD_REALSENSE=OFF \
     -DBUILD_SHARED_LIBS=ON \
     -DBUILD_TENSORFLOW_OPS=OFF \
+    -DBUILD_UNIT_TESTS=OFF\
     -DBUILD_WEBRTC=OFF \
     -DENABLE_HEADLESS_RENDERING=OFF \
     -DBUILD_JUPYTER_EXTENSION=OFF \
@@ -57,6 +62,7 @@ cmake ${SRC_DIR} ${CMAKE_ARGS} \
     -DUSE_SYSTEM_CURL=ON \
     -DUSE_SYSTEM_EIGEN3=ON \
     -DUSE_SYSTEM_EMBREE=ON \
+    -DUSE_SYSTEM_FILAMENT=OFF \
     -DUSE_SYSTEM_FMT=ON \
     -DUSE_SYSTEM_GLEW=ON \
     -DUSE_SYSTEM_GLFW=ON \
@@ -81,6 +87,6 @@ cmake ${SRC_DIR} ${CMAKE_ARGS} \
     -DWITH_FAISS=OFF \
     -DPython3_EXECUTABLE=$PYTHON
 
-cmake --build . --config Release -- -j$CPU_COUNT
+cmake --build . --config Release -- -j1
 cmake --build . --config Release --target install
 cmake --build . --config Release --target install-pip-package
