@@ -59,6 +59,7 @@ requirements:
     - python
     - pip
     - assimp
+    - libzlib
     - eigen
     - embree 3.*
     - glew
