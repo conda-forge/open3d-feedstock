@@ -74,6 +74,10 @@ requirements:
     - msgpack-c
     - msgpack-cxx
     - minizip
+    - qt6-main  # [not ppc64le]
+    - vtk * qt*
+    # We have also a vanilla dependency of vtk without pins so that conda-smithy correctly sets the
+    # pin from conda-forge-pinnings
     - vtk
     # - libidn2  # [osx]
     - libpng
@@ -96,6 +100,7 @@ requirements:
     - plotly
     - dash
     - embree 3.*
+    - vtk * qt*
 
 test:
   imports:
