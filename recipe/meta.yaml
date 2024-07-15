@@ -83,7 +83,7 @@ requirements:
     # - libidn2  # [osx]
     - libpng
     - pybind11
-    - qhull
+    - qhull-static
     - tinyobjloader
     - libcblas
     - liblapacke
