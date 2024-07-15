@@ -19,7 +19,7 @@ source:
     - fix-crypto.patch  # [osx]
 
 build:
-  number: 4
+  number: 5
   skip: True  # [win]
   ignore_run_exports_from:
     - libcblas
@@ -55,6 +55,7 @@ requirements:
     - pip                                    # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - qt6-main                               # [build_platform != target_platform and not ppc64le]
+    - libcxx 17                              # [osx]
   host:
     - setuptools
     - python
@@ -84,6 +85,7 @@ requirements:
     - libpng
     - pybind11
     - qhull
+    - qhull-static
     - tinyobjloader
     - libcblas
     - liblapacke
