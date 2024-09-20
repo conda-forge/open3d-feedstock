@@ -24,6 +24,8 @@ glew:
 - '2.1'
 jsoncpp:
 - 1.9.5
+libboost_headers:
+- '1.86'
 libcblas:
 - 3.9 *netlib
 libcurl:
@@ -51,7 +53,7 @@ qt6_main:
 target_platform:
 - linux-64
 vtk:
-- 9.3.0
+- 9.3.1
 zeromq:
 - 4.3.5
 zip_keys:
