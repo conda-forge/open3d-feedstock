@@ -46,15 +46,15 @@ requirements:
     - libcxx 17                              # [osx]
   host:
     - libgl-devel                        # [linux]
-    - libegl-devel                       # [linux]
-    - libxcb                             # [linux]
-    - xorg-libxext                       # [linux]
+    # - libegl-devel                       # [linux]
+    # - libxcb                             # [linux]
+    # - xorg-libxext                       # [linux]
     - xorg-libxdamage                    # [linux]
     - xorg-libxfixes                     # [linux]
-    - xorg-libxxf86vm                    # [linux]
+    # - xorg-libxxf86vm                    # [linux]
     - xorg-libxcb                        # [linux]
-    - xorg-libxau                        # [linux]
-    - xorg-libxi                         # [linux]
+    # - xorg-libxau                        # [linux]
+    # - xorg-libxi                         # [linux]
     - setuptools
     - python
     - pip
@@ -74,11 +74,11 @@ requirements:
     - msgpack-c
     - msgpack-cxx
     - minizip
-    - qt6-main  # [not ppc64le]
-    - vtk * qt*
+    # - qt6-main  # [not ppc64le]
+    - vtk-base * qt*
     # We have also a vanilla dependency of vtk without pins so that conda-smithy correctly sets the
     # pin from conda-forge-pinnings
-    - vtk
+    - vtk-base
     # - libidn2  # [osx]
     - libpng
     - pybind11
@@ -100,7 +100,7 @@ requirements:
     - python
     - plotly
     - dash
-    - vtk * qt*
+    - vtk-base * qt*
 
 test:
   imports:
