@@ -75,10 +75,10 @@ requirements:
     - msgpack-cxx
     - minizip
     # - qt6-main  # [not ppc64le]
-    - vtk-base * qt*
+    - vtk * qt*
     # We have also a vanilla dependency of vtk without pins so that conda-smithy correctly sets the
     # pin from conda-forge-pinnings
-    - vtk-base
+    - vtk
     # - libidn2  # [osx]
     - libpng
     - pybind11
