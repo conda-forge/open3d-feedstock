@@ -23,7 +23,7 @@ cxx_compiler_version:
 glew:
 - '2.1'
 jsoncpp:
-- 1.9.5
+- 1.9.6
 libboost_headers:
 - '1.86'
 libcblas:
