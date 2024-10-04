@@ -30,14 +30,14 @@ msgpack_c:
 - '6'
 msgpack_cxx:
 - '6'
+openssl:
+- '3'
 pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
 python:
 - 3.11.* *_cpython
-qhull:
-- '2020.2'
 target_platform:
 - win-64
 vtk:
