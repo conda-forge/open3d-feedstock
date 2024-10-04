@@ -1,0 +1,46 @@
+assimp:
+- 5.4.3
+c_compiler:
+- vs2019
+c_stdlib:
+- vs
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- vs2019
+glew:
+- '2.1'
+jsoncpp:
+- 1.9.6
+libboost_headers:
+- '1.86'
+libcblas:
+- 3.9 *netlib
+libcurl:
+- '8'
+libjpeg_turbo:
+- '3'
+liblapacke:
+- 3.9 *netlib
+libpng:
+- '1.6'
+msgpack_c:
+- '6'
+msgpack_cxx:
+- '6'
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.12.* *_cpython
+qhull:
+- '2020.2'
+target_platform:
+- win-64
+vtk:
+- 9.3.1
+zeromq:
+- 4.3.5
