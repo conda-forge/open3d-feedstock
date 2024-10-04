@@ -20,6 +20,8 @@ cxx_compiler:
 - clangxx
 cxx_compiler_version:
 - '17'
+fmt:
+- '11'
 glew:
 - '2.1'
 jsoncpp:
