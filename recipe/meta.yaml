@@ -82,7 +82,7 @@ requirements:
     - nanoflann
     - liblzf  # [not win]
     - libcurl
-    - openssl  # [osx]
+    - openssl  # [not linux]
     # TODO: Consider for the future
     # - libidn2  # [osx]
     # - imgui      # Not used currently as we are not building the GUI
