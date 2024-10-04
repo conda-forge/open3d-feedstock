@@ -58,8 +58,7 @@ requirements:
     - embree 3.*
     - glew
     - glfw
-    # fmt 10 results in build error
-    - fmt 9.*
+    - fmt
     - libjpeg-turbo
     - gmock
     - jsoncpp
