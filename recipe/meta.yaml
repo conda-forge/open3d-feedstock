@@ -73,7 +73,7 @@ requirements:
     - vtk
     - libpng
     - pybind11
-    - qhull
+    - qhull         # [not win]
     - qhull-static  # [not win]
     - tinyobjloader
     - libcblas
