@@ -80,7 +80,7 @@ requirements:
     - liblapacke
     - libboost-headers
     - nanoflann
-    - liblzf
+    - liblzf  # [not win]
     - libcurl
     - openssl  # [not linux]
     # TODO: Consider for the future
