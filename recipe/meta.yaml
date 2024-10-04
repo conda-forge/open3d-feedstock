@@ -17,6 +17,8 @@ source:
     - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
+    # https://github.com/isl-org/Open3D/pull/6783 and https://github.com/isl-org/Open3D/pull/6969
+    - fix-fmt11-support.patch
 
 build:
   number: 10
