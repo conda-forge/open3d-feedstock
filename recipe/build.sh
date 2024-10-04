@@ -1,6 +1,6 @@
 set -euxo pipefail
 
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" && "${target_platform}" == osx-* ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
   (
     mkdir -p build-host
     pushd build-host
@@ -19,7 +19,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" && "${target_platform}" == osx
       -DCMAKE_PREFIX_PATH=$BUILD_PREFIX -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=True
-    # No need to compile everything, just gazebomsgs_out is sufficient
+    # No need to compile everything, just ShaderEncoder and ShaderLinker is sufficient
     cmake --build . --target ShaderEncoder --parallel ${CPU_COUNT} --config Release
     cmake --build . --target ShaderLinker --parallel ${CPU_COUNT} --config Release
   )
@@ -29,7 +29,7 @@ rm -rf build || true
 mkdir build
 cd build
 
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" && "${target_platform}" == osx-* ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
   export CMAKE_ARGS="${CMAKE_ARGS} -DSHADER_ENCODER_PATH:STRING=`pwd`/../build-host/bin/ShaderEncoder"
   export CMAKE_ARGS="${CMAKE_ARGS} -DSHADER_LINKER_PATH:STRING=`pwd`/../build-host/bin/ShaderLinker"
   export QT_HOST_PATH="$BUILD_PREFIX"
