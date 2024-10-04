@@ -19,8 +19,7 @@ source:
     - fix-crypto.patch  # [osx]
 
 build:
-  number: 9
-  skip: True  # [win]
+  number: 10
   ignore_run_exports_from:
     - libcblas
     - minizip
