@@ -74,13 +74,13 @@ requirements:
     - libpng
     - pybind11
     - qhull
-    - qhull-static
+    - qhull-static  # [not win]
     - tinyobjloader
     - libcblas
     - liblapacke
     - libboost-headers
     - nanoflann
-    - liblzf
+    - liblzf  # [not win]
     - libcurl
     - openssl  # [osx]
     # TODO: Consider for the future
