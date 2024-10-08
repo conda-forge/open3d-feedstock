@@ -17,6 +17,8 @@ source:
     - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
+    - pr-6783.patch
+    - pr-6969.patch
 
 build:
   number: 10
@@ -58,8 +60,7 @@ requirements:
     - embree 3.*
     - glew
     - glfw
-    # fmt 10 results in build error
-    - fmt 9.*
+    - fmt
     - libjpeg-turbo
     - gmock
     - jsoncpp
