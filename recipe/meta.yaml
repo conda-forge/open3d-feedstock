@@ -17,6 +17,7 @@ source:
     - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
+    - 6783.patch
 
 build:
   number: 11
