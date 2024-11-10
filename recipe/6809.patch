@@ -292,27 +292,6 @@ index e50b122ec..561a3f4f1 100644
          endif()
      endif()
  endif ()
-diff --git a/3rdparty/imgui/imgui.cmake b/3rdparty/imgui/imgui.cmake
-index 752addd86..064d227c1 100644
---- a/3rdparty/imgui/imgui.cmake
-+++ b/3rdparty/imgui/imgui.cmake
-@@ -1,6 +1,6 @@
--include(ExternalProject)
-+include(FetchContent)
- 
--ExternalProject_Add(
-+FetchContent_Declare(
-     ext_imgui
-     PREFIX imgui
-     URL https://github.com/ocornut/imgui/archive/refs/tags/v1.88.tar.gz
-@@ -12,5 +12,5 @@ ExternalProject_Add(
-     INSTALL_COMMAND ""
- )
- 
--ExternalProject_Get_Property(ext_imgui SOURCE_DIR)
--set(IMGUI_SOURCE_DIR ${SOURCE_DIR})
-+FetchContent_MakeAvailable(ext_imgui)
-+FetchContent_GetProperties(ext_imgui SOURCE_DIR IMGUI_SOURCE_DIR)
 diff --git a/3rdparty/ippicv/LICENSE b/3rdparty/ipp/LICENSE
 similarity index 100%
 rename from 3rdparty/ippicv/LICENSE
@@ -1079,33 +1058,6 @@ index 981b564fcbc..00000000000
 -
 -ExternalProject_Get_Property(ext_parallelstl SOURCE_DIR)
 -set(PARALLELSTL_INCLUDE_DIRS ${SOURCE_DIR}/include/) # "/" is critical.
-diff --git a/3rdparty/qhull/qhull.cmake b/3rdparty/qhull/qhull.cmake
-index c20c86c47..3a02500df 100644
---- a/3rdparty/qhull/qhull.cmake
-+++ b/3rdparty/qhull/qhull.cmake
-@@ -1,6 +1,6 @@
--include(ExternalProject)
-+include(FetchContent)
- 
--ExternalProject_Add(
-+FetchContent_Declare(
-     ext_qhull
-     PREFIX qhull
-     # v8.0.0+ causes seg fault
-@@ -8,11 +8,7 @@ ExternalProject_Add(
-     URL_HASH
-     SHA256=8774e9a12c70b0180b95d6b0b563c5aa4bea8d5960c15e18ae3b6d2521d64f8b
-     DOWNLOAD_DIR "${OPEN3D_THIRD_PARTY_DOWNLOAD_DIR}/qhull"
--    UPDATE_COMMAND ""
--    CONFIGURE_COMMAND ""
--    BUILD_COMMAND ""
--    INSTALL_COMMAND ""
- )
- 
--ExternalProject_Get_Property(ext_qhull SOURCE_DIR)
--set(QHULL_SOURCE_DIR ${SOURCE_DIR})
-+FetchContent_Populate(ext_qhull)
-+FetchContent_GetProperties(ext_qhull SOURCE_DIR QHULL_SOURCE_DIR)
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index be3e61860..284ce0bfa 100644
 --- a/CMakeLists.txt
