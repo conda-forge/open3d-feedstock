@@ -17,9 +17,11 @@ source:
     - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
+    # https://github.com/isl-org/Open3D/pull/6783 and https://github.com/isl-org/Open3D/pull/6969
+    - fix-fmt11-support.patch
 
 build:
-  number: 10
+  number: 11
   skip: True  # [win]
   ignore_run_exports_from:
     - libcblas
@@ -58,8 +60,7 @@ requirements:
     - embree 3.*
     - glew
     - glfw
-    # fmt 10 results in build error
-    - fmt 9.*
+    - fmt
     - libjpeg-turbo
     - gmock
     - jsoncpp
