@@ -14,12 +14,13 @@ source:
     - fix-curl.patch
     - fix-error.patch
     - fix-find-imgui.patch
-    - fix-find-embree.patch
+    # - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
     # https://github.com/isl-org/Open3D/pull/6783 and https://github.com/isl-org/Open3D/pull/6969
     - fix-fmt11-support.patch
     - 6809.patch
+    - 6665.patch
 
 build:
   number: 12
@@ -72,6 +73,7 @@ requirements:
     - msgpack-cxx
     - minizip
     - vtk * qt*
+    - qt6-main
     # We have also a vanilla dependency of vtk without pins so that conda-smithy correctly sets the
     # pin from conda-forge-pinnings
     - vtk
@@ -111,11 +113,9 @@ about:
   license: MIT
   license_file:
     - LICENSE
-    - LICENSE_TBB
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas
-    - 3rdparty/parallelstl/LICENSE
     - 3rdparty/possionrecon/LICENSE
     - 3rdparty/rply/LICENSE
     - 3rdparty/tinyfiledialogs/LICENSE

@@ -33,6 +33,8 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
   export CMAKE_ARGS="${CMAKE_ARGS} -DSHADER_ENCODER_PATH:STRING=`pwd`/../build-host/bin/ShaderEncoder"
   export CMAKE_ARGS="${CMAKE_ARGS} -DSHADER_LINKER_PATH:STRING=`pwd`/../build-host/bin/ShaderLinker"
   export QT_HOST_PATH="$BUILD_PREFIX"
+else
+  export QT_HOST_PATH="$PREFIX"
 fi
 
 cmake ${SRC_DIR} ${CMAKE_ARGS} \
