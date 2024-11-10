@@ -21,7 +21,7 @@ source:
     - fix-fmt11-support.patch
 
 build:
-  number: 10
+  number: 11
   skip: True  # [win]
   ignore_run_exports_from:
     - libcblas
