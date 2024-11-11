@@ -38,7 +38,6 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
-    - {{ cdt('libxcb') }}             # [linux]
     - cmake
     - make
     - pkg-config
@@ -54,6 +53,7 @@ requirements:
     - libgl-devel                        # [linux]
     - xorg-libxdamage                    # [linux]
     - xorg-libxfixes                     # [linux]
+    - xorg-libxcb                        # [linux]
     - setuptools
     - python
     - pip
