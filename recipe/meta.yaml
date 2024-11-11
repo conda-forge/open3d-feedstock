@@ -14,7 +14,6 @@ source:
     - fix-curl.patch
     - fix-error.patch
     - fix-find-imgui.patch
-    # - fix-find-embree.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
     # https://github.com/isl-org/Open3D/pull/6783 and https://github.com/isl-org/Open3D/pull/6969
