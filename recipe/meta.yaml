@@ -37,6 +37,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
+    - {{ cdt('libxcb') }}                    # [aarch64 or ppc64le]
     - cmake
     - make
     - pkg-config
@@ -48,11 +49,11 @@ requirements:
     - qt6-main                               # [build_platform != target_platform and not ppc64le]
     - libcxx 17                              # [osx]
   host:
-    - libcxx >=7                         # [aarch64]
-    - libgl-devel                        # [linux]
-    - xorg-libxdamage                    # [linux]
-    - xorg-libxfixes                     # [linux]
-    - xorg-libxcb                        # [linux]
+    - libcxx >=7                             # [aarch64]
+    - libgl-devel                            # [linux]
+    - xorg-libxdamage                        # [linux]
+    - xorg-libxfixes                         # [linux]
+    - xorg-libxcb                            # [linux64]
     - setuptools
     - python
     - pip
