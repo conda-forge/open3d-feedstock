@@ -38,6 +38,8 @@ liblapacke:
 - 3.9 *netlib
 libpng:
 - '1.6'
+libxcb:
+- '1'
 msgpack_c:
 - '6'
 msgpack_cxx:
@@ -50,8 +52,12 @@ python:
 - 3.11.* *_cpython
 qhull:
 - '2020.2'
+qt6_main:
+- '6.7'
 target_platform:
 - linux-64
+tbb_devel:
+- '2021'
 vtk:
 - 9.3.1
 zeromq:
