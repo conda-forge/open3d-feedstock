@@ -38,6 +38,8 @@ liblapacke:
 - 3.9 *netlib
 libpng:
 - '1.6'
+libxcb:
+- '1'
 msgpack_c:
 - '6'
 msgpack_cxx:
