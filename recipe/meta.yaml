@@ -81,8 +81,11 @@ requirements:
     - qhull         # [not win]
     - qhull-static  # [not win]
     - tinyobjloader
+    - libblas
     - libcblas
+    - liblapack
     - liblapacke
+    - mkl-devel  # [win]
     - libboost-headers
     - nanoflann
     - liblzf  # [not win]
@@ -99,6 +102,7 @@ requirements:
     - plotly
     - dash
     - vtk-base * qt*
+    - libblas * *mkl  # [win]
 
 test:
   imports:
