@@ -81,10 +81,12 @@ requirements:
     - qhull         # [not win]
     - qhull-static  # [not win]
     - tinyobjloader
-    - libblas
-    - libcblas
-    - liblapack
-    - liblapacke
+    - libblas * *mkl  # [win]
+    - libcblas * *mkl  # [win]
+    - libcblas  # [not win]
+    - liblapack * *mkl  # [win]
+    - liblapack  # [not win]
+    - liblapacke * *mkl  # [win]
     - mkl-devel  # [win]
     - libboost-headers
     - nanoflann
