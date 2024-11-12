@@ -1,0 +1,13 @@
+diff --git a/cpp/open3d/utility/ExtractZIP.cpp b/cpp/open3d/utility/ExtractZIP.cpp
+index eba295992c2..48b4c5b31bf 100644
+--- a/cpp/open3d/utility/ExtractZIP.cpp
++++ b/cpp/open3d/utility/ExtractZIP.cpp
+@@ -20,7 +20,7 @@
+ #include "open3d/utility/FileSystem.h"
+ #include "open3d/utility/Logging.h"
+ 
+-#ifdef __APPLE__
++#ifdef __APPLE__ || _WIN32
+ // In darwin and perhaps other BSD variants off_t is a 64 bit value, hence no
+ // need for specific 64 bit functions
+ #define FOPEN_FUNC(filename, mode) fopen(filename, mode)
