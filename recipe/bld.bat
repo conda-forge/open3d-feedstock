@@ -1,6 +1,10 @@
 @echo off
 SETLOCAL EnableExtensions DisableDelayedExpansion
 
+:: Workaround for building LAPACK headers with C++17
+:: see https://github.com/conda-forge/opencv-feedstock/pull/363#issuecomment-1604972688
+set "CXXFLAGS=%CXXFLAGS% -D_CRT_USE_C_COMPLEX_H"
+
 if exist build rmdir /s /q build
 mkdir build
 cd build
