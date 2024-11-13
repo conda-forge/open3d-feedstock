@@ -80,7 +80,7 @@ requirements:
     - libpng
     - pybind11
     - qhull
-    - qhull-static
+    - qhull-static       # [not win]
     - tinyobjloader
     - libcblas           # [not win]
     - liblapack          # [not win]
