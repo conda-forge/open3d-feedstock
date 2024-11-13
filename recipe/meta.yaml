@@ -82,9 +82,10 @@ requirements:
     - qhull              # [not win]
     - qhull-static       # [not win]
     - tinyobjloader
-    - libcblas
+    - libcblas           # [not win]
     - liblapack          # [not win]
     - liblapacke         # [not win]
+    - libcblas * *mkl    # [not win]
     - liblapack * *mkl   # [win]
     - liblapacke * *mkl  # [win]
     - mkl-devel          # [win]
