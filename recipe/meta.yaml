@@ -27,7 +27,7 @@ build:
   skip: true  # [not win]
   ignore_run_exports_from:
     - libcblas
-    - minizip  # [not win]
+    - minizip
     - msgpack-c
     - msgpack-cxx
   run_exports:
@@ -71,7 +71,8 @@ requirements:
     - cppzmq                                 # [not win]
     - msgpack-c
     - msgpack-cxx
-    - minizip                                # [not win]
+    - minizip
+    - zlib                                   # [win]
     - vtk * qt*
     - qt6-main
     # We have also a vanilla dependency of vtk without pins so that conda-smithy correctly sets the
