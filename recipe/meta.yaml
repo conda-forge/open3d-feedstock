@@ -107,6 +107,7 @@ requirements:
     - dash
     - vtk-base * qt*
     - libblas * *mkl  # [win]
+    - minizip         # [win]
 
 test:
   imports:
