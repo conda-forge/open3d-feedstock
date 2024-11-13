@@ -60,7 +60,7 @@ requirements:
     - assimp
     - libzlib
     - eigen
-    - embree                                 # [not win]
+    - embree
     - glew
     - glfw
     - fmt
