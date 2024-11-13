@@ -7,8 +7,6 @@ cd build
 
 cmake %SRC_DIR% ^
     -DCMAKE_VERBOSE_MAKEFILE=ON ^
-    -DCMAKE_EXE_LINKER_FLAGS="/VERBOSE" ^
-    -DCMAKE_SHARED_LINKER_FLAGS="/VERBOSE" ^
     -DBUILD_AZURE_KINECT=OFF ^
     -DBUILD_CUDA_MODULE=OFF ^
     -DBUILD_COMMON_CUDA_ARCHS=OFF ^
@@ -55,7 +53,7 @@ cmake %SRC_DIR% ^
     -DWITH_IPP=OFF ^
     -DPython3_EXECUTABLE=%PYTHON%
 
-cmake --build . --config Release -- /m:%CPU_COUNT% /v:detailed
+cmake --build . --config Release -- /m:%CPU_COUNT%
 
 cmake --build . --config Release --target install
 
