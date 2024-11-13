@@ -94,6 +94,7 @@ requirements:
     - liblzf             # [not win]
     - libcurl
     - openssl            # [not linux]
+    - libidn2            # [win]
     - tbb-devel
     # TODO: Consider for the future
     # - libidn2  # [osx]
