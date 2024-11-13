@@ -11,20 +11,3 @@ index eba295992c2..48b4c5b31bf 100644
  // In darwin and perhaps other BSD variants off_t is a 64 bit value, hence no
  // need for specific 64 bit functions
  #define FOPEN_FUNC(filename, mode) fopen(filename, mode)
-diff --git a/cpp/open3d/core/linalg/LinalgHeadersCPU.h b/cpp/open3d/core/linalg/LinalgHeadersCPU.h
-index 3f94a9ae274..c7cf56ac5db 100644
---- a/cpp/open3d/core/linalg/LinalgHeadersCPU.h
-+++ b/cpp/open3d/core/linalg/LinalgHeadersCPU.h
-@@ -14,6 +14,12 @@
- #pragma once
- 
- #ifdef USE_BLAS
-+#if defined(_MSC_VER)
-+    #include <complex.h>
-+    #define LAPACK_COMPLEX_CUSTOM
-+    #define lapack_complex_float _Fcomplex
-+    #define lapack_complex_double _Dcomplex
-+#endif
- #define OPEN3D_CPU_LINALG_INT int32_t
- #define lapack_int int32_t
- #include <cblas.h>
