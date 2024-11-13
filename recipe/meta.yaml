@@ -39,7 +39,8 @@ requirements:
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - cmake
-    - make
+    - make                                   # [not win]
+    - ninja                                  # [win]
     - pkg-config
     - llvm-openmp                            # [osx]
     - libgomp                                # [linux]
