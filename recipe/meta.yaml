@@ -79,8 +79,8 @@ requirements:
     - vtk
     - libpng
     - pybind11
-    - qhull              # [not win]
-    - qhull-static       # [not win]
+    - qhull
+    - qhull-static
     - tinyobjloader
     - libcblas           # [not win]
     - liblapack          # [not win]
@@ -91,7 +91,7 @@ requirements:
     - mkl-devel          # [win]
     - libboost-headers
     - nanoflann
-    - liblzf             # [not win]
+    - liblzf
     - libcurl
     - openssl            # [not linux]
     - tbb-devel
