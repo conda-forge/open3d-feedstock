@@ -1,6 +1,8 @@
 @echo off
 SETLOCAL EnableExtensions DisableDelayedExpansion
 
+mklink "%LIBRARY_INC%\cblas.h" "%LIBRARY_INC%\mkl_cblas.h"
+
 :: Workaround for building LAPACK headers with C++17
 :: see https://github.com/conda-forge/opencv-feedstock/pull/363#issuecomment-1604972688
 set "CXXFLAGS=%CXXFLAGS% -D_CRT_USE_C_COMPLEX_H"
