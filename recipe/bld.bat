@@ -6,9 +6,8 @@ mkdir build
 cd build
 
 cmake %SRC_DIR% ^
-    -DCMAKE_CXX_FLAGS="/link zlib.lib" ^
     -DCMAKE_VERBOSE_MAKEFILE=ON ^
-    -DCMAKE_EXE_LINKER_FLAGS="/VERBOSE" ^
+    -DCMAKE_EXE_LINKER_FLAGS="/VERBOSE /LIBPATH:%PREFIX%/Library/lib zlib.lib" ^
     -DCMAKE_SHARED_LINKER_FLAGS="/VERBOSE" ^
     -DBUILD_AZURE_KINECT=OFF ^
     -DBUILD_CUDA_MODULE=OFF ^
