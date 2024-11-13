@@ -1,8 +1,6 @@
 @echo off
 SETLOCAL EnableExtensions DisableDelayedExpansion
 
-copy "%LIBRARY_INC%\mkl_cblas.h" "%LIBRARY_INC%\cblas.h"
-
 :: Workaround for building LAPACK headers with C++17
 :: see https://github.com/conda-forge/opencv-feedstock/pull/363#issuecomment-1604972688
 set "CXXFLAGS=%CXXFLAGS% -D_CRT_USE_C_COMPLEX_H"
@@ -31,7 +29,7 @@ cmake %SRC_DIR% ^
     -DUSE_BLAS=OFF ^
     -DUSE_SYSTEM_ASSIMP=ON ^
     -DUSE_SYSTEM_BLAS=ON ^
-    -DUSE_SYSTEM_CURL=OFF ^
+    -DUSE_SYSTEM_CURL=ON ^
     -DUSE_SYSTEM_EIGEN3=ON ^
     -DUSE_SYSTEM_EMBREE=ON ^
     -DUSE_SYSTEM_FMT=ON ^
