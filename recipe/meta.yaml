@@ -21,6 +21,7 @@ source:
     - fix-win.patch  # [win]
     - 6809.patch
     - 6665.patch
+    - fix-win-minizip.patch  # [win]
 
 build:
   number: 13
@@ -72,7 +73,6 @@ requirements:
     - msgpack-c
     - msgpack-cxx
     - minizip
-    - zlib                                   # [win]
     - vtk * qt*
     - qt6-main
     # We have also a vanilla dependency of vtk without pins so that conda-smithy correctly sets the
