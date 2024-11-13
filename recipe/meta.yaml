@@ -24,6 +24,7 @@ source:
 
 build:
   number: 13
+  skip: true  # [not win]
   ignore_run_exports_from:
     - libcblas
     - minizip
