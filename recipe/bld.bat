@@ -6,7 +6,7 @@ mkdir build
 cd build
 
 cmake %SRC_DIR% ^
-    -DSTATIC_WINDOWS_RUNTIME=ON ^
+    -G Ninja ^
     -DBUILD_AZURE_KINECT=OFF ^
     -DBUILD_CUDA_MODULE=OFF ^
     -DBUILD_COMMON_CUDA_ARCHS=OFF ^
