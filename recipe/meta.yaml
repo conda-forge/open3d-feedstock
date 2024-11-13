@@ -78,21 +78,20 @@ requirements:
     - vtk
     - libpng
     - pybind11
-    - qhull         # [not win]
-    - qhull-static  # [not win]
+    - qhull              # [not win]
+    - qhull-static       # [not win]
     - tinyobjloader
-    - libblas * *mkl  # [win]
-    - libcblas * *mkl  # [win]
-    - libcblas  # [not win]
-    - liblapack * *mkl  # [win]
-    - liblapack  # [not win]
+    - libcblas
+    - liblapack          # [not win]
+    - liblapacke         # [not win]
+    - liblapack * *mkl   # [win]
     - liblapacke * *mkl  # [win]
-    - mkl-devel  # [win]
+    - mkl-devel          # [win]
     - libboost-headers
     - nanoflann
-    - liblzf  # [not win]
+    - liblzf             # [not win]
     - libcurl
-    - openssl  # [not linux]
+    - openssl            # [not linux]
     - tbb-devel
     # TODO: Consider for the future
     # - libidn2  # [osx]
