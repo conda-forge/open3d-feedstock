@@ -11,7 +11,7 @@ source:
   patches:
     - fix-tbb.patch
     - fix-unzip.patch
-    - fix-curl.patch
+    - fix-curl.patch  # [not win]
     - fix-error.patch
     - fix-find-imgui.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
