@@ -67,8 +67,8 @@ requirements:
     - libjpeg-turbo
     - gmock
     - jsoncpp
-    - zeromq
-    - cppzmq
+    - zeromq                                 # [not win]
+    - cppzmq                                 # [not win]
     - msgpack-c
     - msgpack-cxx
     - minizip
