@@ -55,7 +55,7 @@ cmake %SRC_DIR% ^
     -DWITH_FAISS=OFF ^
     -DPython3_EXECUTABLE=%PYTHON%
 
-cmake --build . --config Release -- /m:%CPU_COUNT%
+cmake --build . --config Release -- /m:%CPU_COUNT% /v:detailed
 
 cmake --build . --config Release --target install
 
