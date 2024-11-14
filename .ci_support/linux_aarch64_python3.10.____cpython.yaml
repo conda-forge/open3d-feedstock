@@ -38,8 +38,6 @@ libcurl:
 - '8'
 libjpeg_turbo:
 - '3'
-liblapack:
-- 3.9 *netlib
 liblapacke:
 - 3.9 *netlib
 libpng:
