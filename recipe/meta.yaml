@@ -109,6 +109,8 @@ requirements:
     - minizip         # [win]
 
 test:
+  imports:
+    - open3d
   commands:
     - open3d --help
 
