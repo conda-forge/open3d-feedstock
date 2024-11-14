@@ -110,7 +110,7 @@ requirements:
     - minizip         # [win]
 
 test:
-  source_files:
+  files:
     - test_open3d.py
   commands:
     - python test_open3d.py
