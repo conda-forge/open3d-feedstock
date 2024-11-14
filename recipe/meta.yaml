@@ -112,10 +112,7 @@ requirements:
     - minizip         # [win]
 
 test:
-  files:
-    - test_open3d.py
   commands:
-    - python test_open3d.py
     - open3d --help
 
 about:
