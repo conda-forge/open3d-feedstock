@@ -1827,7 +1827,7 @@ diff --git a/cpp/pybind/CMakeLists.txt b/cpp/pybind/CMakeLists.txt
 index 2072615e6..3100ff79e 100644
 --- a/cpp/pybind/CMakeLists.txt
 +++ b/cpp/pybind/CMakeLists.txt
-@@ -75,14 +75,37 @@ endif()
+@@ -75,10 +75,34 @@ endif()
  # `build/lib/${CMAKE_BUILD_TYPE}/Python/{cpu|cuda}`
  set(PYTHON_COMPILED_MODULE_DIR
      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Python/$<IF:$<BOOL:${BUILD_CUDA_MODULE}>,cuda,cpu>")
@@ -1841,6 +1841,7 @@ index 2072615e6..3100ff79e 100644
 +
  set_target_properties(pybind PROPERTIES
                        FOLDER "Python"
++                      RUNTIME_OUTPUT_DIRECTORY "${PYTHON_COMPILED_MODULE_DIR}"
                        LIBRARY_OUTPUT_DIRECTORY "${PYTHON_COMPILED_MODULE_DIR}"
                        ARCHIVE_OUTPUT_DIRECTORY "${PYTHON_COMPILED_MODULE_DIR}")
 +
@@ -1861,12 +1862,7 @@ index 2072615e6..3100ff79e 100644
  # Include additional libraries that may be absent from the user system
  # eg: libc++.so and libc++abi.so (needed by filament) for Linux.
  # libc++.so is a linker script including libc++.so.1 and libc++abi.so, so append 1 to libc++.so
--set(PYTHON_EXTRA_LIBRARIES "")
-+set(PYTHON_EXTRA_LIBRARIES "")
- if (BUILD_GUI AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
-     list(APPEND PYTHON_EXTRA_LIBRARIES ${CPP_LIBRARY}.1 ${CPPABI_LIBRARY}
-         ${MESA_CPU_GL_LIBRARY})
-@@ -102,7 +125,7 @@ if (WITH_OPENMP AND APPLE AND NOT BUILD_SHARED_LIBS)
+@@ -102,7 +126,7 @@ if (WITH_OPENMP AND APPLE AND NOT BUILD_SHARED_LIBS)
      file(GENERATE OUTPUT update_pybind_libomp.sh
          CONTENT [=[libomp_library=$(dyld_info -dependents "$<TARGET_FILE:pybind>" |
  grep libomp | tr -d '[:space:]')
@@ -1875,7 +1871,7 @@ index 2072615e6..3100ff79e 100644
  "$<TARGET_FILE:pybind>"]=])
      add_custom_command(TARGET pybind POST_BUILD
          COMMAND bash update_pybind_libomp.sh
-@@ -123,6 +146,11 @@ message(STATUS "PYPI_PACKAGE_NAME: ${PYPI_PACKAGE_NAME}")
+@@ -123,6 +147,11 @@ message(STATUS "PYPI_PACKAGE_NAME: ${PYPI_PACKAGE_NAME}")
  # add the open3d python module first
  set(COMPILED_MODULE_PATH_LIST $<TARGET_FILE:pybind>)
  

@@ -11,19 +11,22 @@ source:
   patches:
     - fix-tbb.patch
     - fix-unzip.patch
-    - fix-curl.patch
+    - fix-curl.patch  # [not win]
     - fix-error.patch
     - fix-find-imgui.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
     # https://github.com/isl-org/Open3D/pull/6783 and https://github.com/isl-org/Open3D/pull/6969
     - fix-fmt11-support.patch
+    - fix-win-extractzip.patch  # [win]
     - 6809.patch
     - 6665.patch
+    - fix-win-minizip.patch  # [win]
 
 build:
-  number: 12
-  skip: True  # [win]
+  number: 13
+  entry_points:
+    - open3d = open3d.tools.cli:main
   ignore_run_exports_from:
     - libcblas
     - minizip
@@ -79,15 +82,18 @@ requirements:
     - libpng
     - pybind11
     - qhull
-    - qhull-static
+    - qhull-static       # [not win]
     - tinyobjloader
-    - libcblas
-    - liblapacke
+    - libcblas           # [not win]
+    - liblapacke         # [not win]
+    - liblapack * *mkl   # [win]
+    - liblapacke * *mkl  # [win]
+    - mkl-devel          # [win]
     - libboost-headers
     - nanoflann
     - liblzf
-    - libcurl
-    - openssl  # [osx]
+    - libcurl            # [not win]
+    - openssl            # [not linux]
     - tbb-devel
     # TODO: Consider for the future
     # - libidn2  # [osx]
@@ -99,6 +105,8 @@ requirements:
     - plotly
     - dash
     - vtk-base * qt*
+    - libblas * *mkl  # [win]
+    - minizip         # [win]
 
 test:
   imports:
@@ -112,6 +120,7 @@ about:
   license: MIT
   license_file:
     - LICENSE
+    - 3rdparty/curl/LICENSE  # [win]
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas
