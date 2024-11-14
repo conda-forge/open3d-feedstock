@@ -27,7 +27,6 @@ build:
   number: 13
   entry_points:
     - open3d = open3d.tools.cli:main
-  skip: true  # [not win]
   ignore_run_exports_from:
     - libcblas
     - minizip
