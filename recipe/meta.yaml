@@ -114,7 +114,8 @@ test:
     - test_open3d.py
   commands:
     - python test_open3d.py
-    - open3d --help
+    - open3d --help  # [unix]
+    - open3d.exe --help  # [win]
 
 about:
   home: http://www.open3d.org/
