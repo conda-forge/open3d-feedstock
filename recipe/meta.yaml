@@ -92,7 +92,7 @@ requirements:
     - libboost-headers
     - nanoflann
     - liblzf
-    - libcurl
+    - libcurl            # [not win]
     - openssl            # [not linux]
     - tbb-devel
     # TODO: Consider for the future
@@ -120,6 +120,7 @@ about:
   license: MIT
   license_file:
     - LICENSE
+    - 3rdparty/curl/LICENSE  # [win]
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas
