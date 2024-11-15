@@ -20,14 +20,12 @@ libboost_headers:
 - '1.86'
 libcblas:
 - 3.9 *netlib
-libcurl:
-- '8'
 libjpeg_turbo:
 - '3'
 libpng:
 - '1.6'
 mkl_devel:
-- '2023'
+- '2024'
 msgpack_c:
 - '6'
 msgpack_cxx:
@@ -50,3 +48,5 @@ tbb_devel:
 - '2021'
 vtk:
 - 9.3.1
+zeromq:
+- 4.3.5
