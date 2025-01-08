@@ -1,5 +1,5 @@
 {% set name = "Open3D" %}
-{% set version = "0.18.0" %}
+{% set version = "0.19.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/isl-org/Open3D/archive/v{{ version }}.tar.gz
-  sha256: 524ddeb7dc8aaed6dc5b272415df0c8ffcf7eff0816a84cfbdee56cdd6d3587a
+  sha256: 5cedb0e093c6baceab801b903eb8e2558bc2b3999ac57762bf78a39d5e15394a
   patches:
     - fix-tbb.patch
     - fix-unzip.patch
@@ -24,7 +24,7 @@ source:
     - fix-win-minizip.patch  # [win]
 
 build:
-  number: 14
+  number: 0
   entry_points:
     - open3d = open3d.tools.cli:main
   ignore_run_exports_from:
