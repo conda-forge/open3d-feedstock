@@ -92,6 +92,8 @@ requirements:
     - tbb-devel
     - liblzma-devel      # [win]
     - imgui
+    - libvulkan-loader
+    - libvulkan-headers
     # TODO: Consider for the future
     # - libidn2  # [osx]
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
