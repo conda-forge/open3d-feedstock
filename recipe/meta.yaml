@@ -12,7 +12,7 @@ source:
     - fix-unzip.patch
     - fix-curl.patch  # [not win]
     - fix-error.patch
-    - fix-find-imgui.patch
+    # - fix-find-imgui.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
     - fix-win-extractzip.patch  # [win]
