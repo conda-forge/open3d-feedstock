@@ -45,6 +45,8 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - qt6-main                               # [build_platform != target_platform and not ppc64le]
     - libcxx 17                              # [osx]
+    - clangdev                               # [linux]
+    - clangxx                                # [linux]
   host:
     - libcxx >=7                             # [aarch64]
     - libgl-devel                            # [linux]
@@ -94,6 +96,10 @@ requirements:
     - imgui
     - libvulkan-loader
     - libvulkan-headers
+    - clangdev           # [linux]
+    - libclang           # [linux]
+    - libcxx             # [linux]
+    - libcxxabi          # [linux]
     # TODO: Consider for the future
     # - libidn2  # [osx]
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
