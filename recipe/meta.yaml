@@ -91,9 +91,9 @@ requirements:
     - openssl            # [not linux]
     - tbb-devel
     - liblzma-devel      # [win]
+    - imgui
     # TODO: Consider for the future
     # - libidn2  # [osx]
-    # - imgui      # Not used currently as we are not building the GUI
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
   run:
     - numpy
