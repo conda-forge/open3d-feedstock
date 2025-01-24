@@ -90,6 +90,7 @@ requirements:
     - libcurl            # [not win]
     - openssl            # [not linux]
     - tbb-devel
+    - liblzma-devel      # [win]
     # TODO: Consider for the future
     # - libidn2  # [osx]
     # - imgui      # Not used currently as we are not building the GUI
