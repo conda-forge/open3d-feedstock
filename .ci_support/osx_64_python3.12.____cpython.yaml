@@ -29,13 +29,13 @@ jsoncpp:
 libboost_headers:
 - '1.86'
 libcblas:
-- 3.9 *netlib
+- 3.9.* *netlib
 libcurl:
 - '8'
 libjpeg_turbo:
 - '3'
 liblapacke:
-- 3.9 *netlib
+- 3.9.* *netlib
 libpng:
 - '1.6'
 llvm_openmp:
