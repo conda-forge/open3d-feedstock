@@ -94,7 +94,6 @@ requirements:
     - openssl            # [not linux]
     - tbb-devel
     - liblzma-devel      # [win]
-    - imgui
     - libvulkan-loader
     - libvulkan-headers
     - clangdev           # [linux]
@@ -102,6 +101,7 @@ requirements:
     - libcxx             # [linux]
     - libcxxabi          # [linux]
     # TODO: Consider for the future
+    # - imgui      # TODO: Fails with error C2039: 'KeyMap': is not a member of 'ImGuiIO'
     # - libidn2  # [osx]
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
   run:
@@ -127,6 +127,7 @@ about:
   license_file:
     - LICENSE
     - 3rdparty/curl/LICENSE  # [win]
+    - 3rdparty/imgui/LICENSE
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas
