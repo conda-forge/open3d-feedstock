@@ -12,6 +12,53 @@ index 432f55a28..5fb8f3aba 100644
  ExternalProject_Add(
      ext_filament
      PREFIX filament
+diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
+index 13f6501c8..b8e0bc3d0 100644
+--- a/3rdparty/find_dependencies.cmake
++++ b/3rdparty/find_dependencies.cmake
+@@ -1283,21 +1283,6 @@ if(BUILD_GUI)
+                     endif()
+                 endif()
+             endif()
+-            if (UNIX AND NOT APPLE)
+-                # Find corresponding libc++ and libc++abi libraries. On Ubuntu,
+-                # clang libraries are located at /usr/lib/llvm-{version}/lib,
+-                # and the default version will have a sybolic link at
+-                # /usr/lib/x86_64-linux-gnu/ or /usr/lib/aarch64-linux-gnu.
+-                #
+-                # On aarch64, the symbolic link path may not work for CMake's
+-                # find_library. Therefore, when compiling Filament from source,
+-                # we explicitly find the corresponding path based on the clang
+-                # version.
+-                execute_process(COMMAND ${FILAMENT_CXX_COMPILER} --version OUTPUT_VARIABLE clang_version)
+-                if(clang_version MATCHES "clang version ([0-9]+)")
+-                    set(CLANG_LIBDIR "/usr/lib/llvm-${CMAKE_MATCH_1}/lib")
+-                endif()
+-            endif()
+             include(${Open3D_3RDPARTY_DIR}/filament/filament_build.cmake)
+         else()
+             message(STATUS "Using prebuilt third-party library Filament")
+@@ -1332,20 +1317,6 @@ if(BUILD_GUI)
+             # For ubuntu, llvm libs are located in /usr/lib/llvm-{version}/lib.
+             # We first search for these paths, and then search CMake's default
+             # search path. LLVM version must be >= 7 to compile Filament.
+-            if (NOT CLANG_LIBDIR)
+-                message(STATUS "Searching /usr/lib/llvm-[7..19]/lib/ for libc++ and libc++abi")
+-                foreach(llvm_ver RANGE 7 19)
+-                    set(llvm_lib_dir "/usr/lib/llvm-${llvm_ver}/lib")
+-                    find_library(CPP_LIBRARY    c++ PATHS ${llvm_lib_dir} NO_DEFAULT_PATH)
+-                    find_library(CPPABI_LIBRARY c++abi PATHS ${llvm_lib_dir} NO_DEFAULT_PATH)
+-                    if (CPP_LIBRARY AND CPPABI_LIBRARY)
+-                        set(CLANG_LIBDIR ${llvm_lib_dir})
+-                        message(STATUS "CLANG_LIBDIR found in ubuntu-default: ${CLANG_LIBDIR}")
+-                        set(LIBCPP_VERSION ${llvm_ver})
+-                        break()
+-                    endif()
+-                endforeach()
+-            endif()
+ 
+             # Fallback to non-ubuntu-default paths. Note that the PATH_SUFFIXES
+             # is not enforced by CMake.
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 354125dc0..d82da1f48 100644
 --- a/CMakeLists.txt
