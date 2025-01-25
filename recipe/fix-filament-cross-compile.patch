@@ -1,0 +1,41 @@
+diff --git a/3rdparty/filament/filament_build.cmake b/3rdparty/filament/filament_build.cmake
+index 432f55a28..5fb8f3aba 100644
+--- a/3rdparty/filament/filament_build.cmake
++++ b/3rdparty/filament/filament_build.cmake
+@@ -49,6 +49,9 @@ if(NOT WIN32)
+     set(filament_cxx_flags "${filament_cxx_flags} -fno-builtin")
+ endif()
+ 
++message(WARNING "TEST CMAKE_ARGS: $ENV{CMAKE_ARGS}")
++message(WARNING "TEST target_platform: $ENV{target_platform}")
++
+ ExternalProject_Add(
+     ext_filament
+     PREFIX filament
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 354125dc0..d82da1f48 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -8,20 +8,12 @@ cmake_minimum_required(VERSION 3.24)
+ # CMAKE_HOST_SYSTEM_PROCESSOR is only available after calling project(),
+ # which depends on ${OPEN3D_VERSION}, which depends on ${DEVELOPER_BUILD}.
+ if(UNIX AND NOT APPLE)
+-    execute_process(COMMAND uname -m
+-        OUTPUT_VARIABLE PROCESSOR_ARCH
+-        OUTPUT_STRIP_TRAILING_WHITESPACE
+-    )
+-    if(PROCESSOR_ARCH STREQUAL "aarch64")
++    if($ENV{target_platform} STREQUAL "linux-aarch64")
+         set(LINUX_AARCH64 TRUE)
+     endif()
+ endif()
+ if(APPLE)
+-    execute_process(COMMAND uname -m
+-        OUTPUT_VARIABLE PROCESSOR_ARCH
+-        OUTPUT_STRIP_TRAILING_WHITESPACE
+-    )
+-    if(PROCESSOR_ARCH STREQUAL "arm64")
++    if($ENV{target_platform} STREQUAL "osx-arm64")
+         set(APPLE_AARCH64 TRUE)
+         set (CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING
+             "Minimum OS X deployment version" FORCE)
