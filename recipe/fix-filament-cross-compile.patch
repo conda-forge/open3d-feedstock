@@ -1,5 +1,5 @@
 diff --git a/3rdparty/filament/filament_build.cmake b/3rdparty/filament/filament_build.cmake
-index 432f55a28..5fb8f3aba 100644
+index 432f55a28..08e179392 100644
 --- a/3rdparty/filament/filament_build.cmake
 +++ b/3rdparty/filament/filament_build.cmake
 @@ -49,6 +49,9 @@ if(NOT WIN32)
@@ -12,14 +12,86 @@ index 432f55a28..5fb8f3aba 100644
  ExternalProject_Add(
      ext_filament
      PREFIX filament
+@@ -56,6 +59,9 @@ ExternalProject_Add(
+     URL_HASH SHA256=00c3f41af0fcfb2df904e1f77934f2678d943ddac5eb889788a5e22590e497bd
+     DOWNLOAD_DIR "${OPEN3D_THIRD_PARTY_DOWNLOAD_DIR}/filament"
+     UPDATE_COMMAND ""
++    PATCH_COMMAND git init
++    COMMAND git apply --ignore-space-change --ignore-whitespace
++        ${CMAKE_CURRENT_LIST_DIR}/fix-ranlib-args.patch
+     CMAKE_ARGS
+         ${ExternalProject_CMAKE_ARGS}
+         -DCMAKE_BUILD_TYPE=${FILAMENT_BUILD_TYPE}
 diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
-index 13f6501c8..b8e0bc3d0 100644
+index 13f6501c8..f37bd9827 100644
 --- a/3rdparty/find_dependencies.cmake
 +++ b/3rdparty/find_dependencies.cmake
-@@ -1283,21 +1283,6 @@ if(BUILD_GUI)
-                     endif()
-                 endif()
-             endif()
+@@ -1221,83 +1221,6 @@ if(BUILD_GUI)
+         set(FILAMENT_RUNTIME_VER "")
+         if(BUILD_FILAMENT_FROM_SOURCE)
+             message(STATUS "Building third-party library Filament from source")
+-            if(MSVC OR (CMAKE_C_COMPILER_ID MATCHES ".*Clang" AND
+-                CMAKE_CXX_COMPILER_ID MATCHES ".*Clang"
+-                AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7))
+-                set(FILAMENT_C_COMPILER "${CMAKE_C_COMPILER}")
+-                set(FILAMENT_CXX_COMPILER "${CMAKE_CXX_COMPILER}")
+-            else()
+-                message(STATUS "Filament can only be built with Clang >= 7")
+-                # First, check default version, because the user may have configured
+-                # a particular version as default for a reason.
+-                find_program(CLANG_DEFAULT_CC NAMES clang)
+-                find_program(CLANG_DEFAULT_CXX NAMES clang++)
+-                if(CLANG_DEFAULT_CC AND CLANG_DEFAULT_CXX)
+-                    execute_process(COMMAND ${CLANG_DEFAULT_CXX} --version OUTPUT_VARIABLE clang_version)
+-                    if(clang_version MATCHES "clang version ([0-9]+)")
+-                        if (CMAKE_MATCH_1 GREATER_EQUAL 7)
+-                            message(STATUS "Using ${CLANG_DEFAULT_CXX} to build Filament")
+-                            set(FILAMENT_C_COMPILER "${CLANG_DEFAULT_CC}")
+-                            set(FILAMENT_CXX_COMPILER "${CLANG_DEFAULT_CXX}")
+-                        endif()
+-                    endif()
+-                endif()
+-                # If the default version is not sufficient, look for some specific versions
+-                if(NOT FILAMENT_C_COMPILER OR NOT FILAMENT_CXX_COMPILER)
+-                    find_program(CLANG_VERSIONED_CC NAMES
+-                                 clang-19
+-                                 clang-18
+-                                 clang-17
+-                                 clang-16
+-                                 clang-15
+-                                 clang-14
+-                                 clang-13
+-                                 clang-12
+-                                 clang-11
+-                                 clang-10
+-                                 clang-9
+-                                 clang-8
+-                                 clang-7
+-                    )
+-                    find_program(CLANG_VERSIONED_CXX NAMES
+-                                 clang++-19
+-                                 clang++-18
+-                                 clang++-17
+-                                 clang++-16
+-                                 clang++-15
+-                                 clang++-14
+-                                 clang++-13
+-                                 clang++-12
+-                                 clang++-11
+-                                 clang++-10
+-                                 clang++-9
+-                                 clang++-8
+-                                 clang++-7
+-                    )
+-                    if (CLANG_VERSIONED_CC AND CLANG_VERSIONED_CXX)
+-                        set(FILAMENT_C_COMPILER "${CLANG_VERSIONED_CC}")
+-                        set(FILAMENT_CXX_COMPILER "${CLANG_VERSIONED_CXX}")
+-                        message(STATUS "Using ${CLANG_VERSIONED_CXX} to build Filament")
+-                    else()
+-                        message(FATAL_ERROR "Need Clang >= 7 to compile Filament from source")
+-                    endif()
+-                endif()
+-            endif()
 -            if (UNIX AND NOT APPLE)
 -                # Find corresponding libc++ and libc++abi libraries. On Ubuntu,
 -                # clang libraries are located at /usr/lib/llvm-{version}/lib,
@@ -38,7 +110,7 @@ index 13f6501c8..b8e0bc3d0 100644
              include(${Open3D_3RDPARTY_DIR}/filament/filament_build.cmake)
          else()
              message(STATUS "Using prebuilt third-party library Filament")
-@@ -1332,20 +1317,6 @@ if(BUILD_GUI)
+@@ -1332,20 +1255,6 @@ if(BUILD_GUI)
              # For ubuntu, llvm libs are located in /usr/lib/llvm-{version}/lib.
              # We first search for these paths, and then search CMake's default
              # search path. LLVM version must be >= 7 to compile Filament.
@@ -86,3 +158,24 @@ index 354125dc0..d82da1f48 100644
          set(APPLE_AARCH64 TRUE)
          set (CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING
              "Minimum OS X deployment version" FORCE)
+diff --git a/3rdparty/filament/fix-ranlib-args.patch b/3rdparty/filament/fix-ranlib-args.patch
+new file mode 100644
+index 00000000000..394a0cbe363
+--- /dev/null
++++ b/3rdparty/filament/fix-ranlib-args.patch
+@@ -0,0 +1,15 @@
++diff --git a/CMakeLists.txt b/CMakeLists.txt
++index 91ab2922d83..a62d702ea8c 100644
++--- a/CMakeLists.txt
+++++ b/CMakeLists.txt
++@@ -342,8 +342,8 @@ if (APPLE)
++     set(B_SYMBOLIC_FUNCTIONS "")
++ 
++     # tell ranlib to ignore empty compilation units
++-    set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
++-    set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
+++    set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> <TARGET>")
+++    set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> <TARGET>")
++     # prevents ar from invoking ranlib, let CMake do it
++     set(CMAKE_C_ARCHIVE_CREATE   "<CMAKE_AR> qc -S <TARGET> <LINK_FLAGS> <OBJECTS>")
++     set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qc -S <TARGET> <LINK_FLAGS> <OBJECTS>")
