@@ -17,6 +17,7 @@ source:
     - fix-crypto.patch  # [osx]
     - fix-win-extractzip.patch  # [win]
     - fix-win-minizip.patch  # [win]
+    - fix-missing-memory-include.patch
 
 build:
   number: 1
