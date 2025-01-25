@@ -23,7 +23,7 @@ index 432f55a28..08e179392 100644
          ${ExternalProject_CMAKE_ARGS}
          -DCMAKE_BUILD_TYPE=${FILAMENT_BUILD_TYPE}
 diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
-index 13f6501c8..f37bd9827 100644
+index 13f6501c8..c4e0adb57 100644
 --- a/3rdparty/find_dependencies.cmake
 +++ b/3rdparty/find_dependencies.cmake
 @@ -1221,83 +1221,6 @@ if(BUILD_GUI)
@@ -131,6 +131,19 @@ index 13f6501c8..f37bd9827 100644
  
              # Fallback to non-ubuntu-default paths. Note that the PATH_SUFFIXES
              # is not enforced by CMake.
+@@ -1595,9 +1504,9 @@ else(OPEN3D_USE_ONEAPI_PACKAGES)
+     # MKL/BLAS
+     if(USE_BLAS)
+         if (USE_SYSTEM_BLAS)
+-            find_package(BLAS)
+-            find_package(LAPACK)
+-            find_package(LAPACKE)
++            find_package(BLAS REQUIRED)
++            find_package(LAPACK REQUIRED)
++            find_package(LAPACKE REQUIRED)
+             if(BLAS_FOUND AND LAPACK_FOUND AND LAPACKE_FOUND)
+                 message(STATUS "System BLAS/LAPACK/LAPACKE found.")
+                 list(APPEND Open3D_3RDPARTY_PRIVATE_TARGETS_FROM_SYSTEM
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 354125dc0..d82da1f48 100644
 --- a/CMakeLists.txt
@@ -158,24 +171,3 @@ index 354125dc0..d82da1f48 100644
          set(APPLE_AARCH64 TRUE)
          set (CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING
              "Minimum OS X deployment version" FORCE)
-diff --git a/3rdparty/filament/fix-ranlib-args.patch b/3rdparty/filament/fix-ranlib-args.patch
-new file mode 100644
-index 00000000000..394a0cbe363
---- /dev/null
-+++ b/3rdparty/filament/fix-ranlib-args.patch
-@@ -0,0 +1,15 @@
-+diff --git a/CMakeLists.txt b/CMakeLists.txt
-+index 91ab2922d83..a62d702ea8c 100644
-+--- a/CMakeLists.txt
-++++ b/CMakeLists.txt
-+@@ -342,8 +342,8 @@ if (APPLE)
-+     set(B_SYMBOLIC_FUNCTIONS "")
-+ 
-+     # tell ranlib to ignore empty compilation units
-+-    set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
-+-    set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
-++    set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> <TARGET>")
-++    set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> <TARGET>")
-+     # prevents ar from invoking ranlib, let CMake do it
-+     set(CMAKE_C_ARCHIVE_CREATE   "<CMAKE_AR> qc -S <TARGET> <LINK_FLAGS> <OBJECTS>")
-+     set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qc -S <TARGET> <LINK_FLAGS> <OBJECTS>")
