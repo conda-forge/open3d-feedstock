@@ -91,6 +91,6 @@ cmake ${SRC_DIR} ${CMAKE_ARGS} \
     -DWITH_FAISS=OFF \
     -DPython3_EXECUTABLE=$PYTHON
 
-cmake --build . --config Release -- -j$CPU_COUNT
+cmake --build . --config Release -- -j1
 cmake --build . --config Release --target install
 cmake --build . --config Release --target install-pip-package
