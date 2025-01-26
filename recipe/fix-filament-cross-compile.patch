@@ -1,3 +1,30 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 354125dc0..d82da1f48 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -8,20 +8,12 @@ cmake_minimum_required(VERSION 3.24)
+ # CMAKE_HOST_SYSTEM_PROCESSOR is only available after calling project(),
+ # which depends on ${OPEN3D_VERSION}, which depends on ${DEVELOPER_BUILD}.
+ if(UNIX AND NOT APPLE)
+-    execute_process(COMMAND uname -m
+-        OUTPUT_VARIABLE PROCESSOR_ARCH
+-        OUTPUT_STRIP_TRAILING_WHITESPACE
+-    )
+-    if(PROCESSOR_ARCH STREQUAL "aarch64")
++    if($ENV{target_platform} STREQUAL "linux-aarch64")
+         set(LINUX_AARCH64 TRUE)
+     endif()
+ endif()
+ if(APPLE)
+-    execute_process(COMMAND uname -m
+-        OUTPUT_VARIABLE PROCESSOR_ARCH
+-        OUTPUT_STRIP_TRAILING_WHITESPACE
+-    )
+-    if(PROCESSOR_ARCH STREQUAL "arm64")
++    if($ENV{target_platform} STREQUAL "osx-arm64")
+         set(APPLE_AARCH64 TRUE)
+         set (CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING
+             "Minimum OS X deployment version" FORCE)
 diff --git a/3rdparty/filament/CMakeLists.txt b/3rdparty/filament/CMakeLists.txt
 new file mode 100644
 index 000000000..89514be0a
