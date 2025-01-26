@@ -27,10 +27,10 @@ index 354125dc0..d82da1f48 100644
              "Minimum OS X deployment version" FORCE)
 diff --git a/3rdparty/filament/CMakeLists.txt b/3rdparty/filament/CMakeLists.txt
 new file mode 100644
-index 000000000..89514be0a
+index 000000000..a7ad3d288
 --- /dev/null
 +++ b/3rdparty/filament/CMakeLists.txt
-@@ -0,0 +1,15 @@
+@@ -0,0 +1,16 @@
 +cmake_minimum_required(VERSION 3.14)
 +
 +# Define the main project
@@ -40,7 +40,8 @@ index 000000000..89514be0a
 +include(${CMAKE_CURRENT_LIST_DIR}/filament_build.cmake)
 +
 +# Ensure the external Filament project is built before proceeding
-+add_dependencies(${PROJECT_NAME} ext_filament)
++add_custom_target(FilamentDummyTarget ALL)
++add_dependencies(FilamentDummyTarget ext_filament)
 +
 +# Add install commands for the Filament project
 +install(DIRECTORY ${FILAMENT_ROOT}/lib/ DESTINATION lib)
@@ -71,12 +72,17 @@ diff --git a/3rdparty/filament/filament_build.cmake b/3rdparty/filament/filament
 index 432f55a28..08e179392 100644
 --- a/3rdparty/filament/filament_build.cmake
 +++ b/3rdparty/filament/filament_build.cmake
-@@ -49,6 +49,9 @@ if(NOT WIN32)
+@@ -49,6 +49,14 @@ if(NOT WIN32)
      set(filament_cxx_flags "${filament_cxx_flags} -fno-builtin")
  endif()
  
 +message(WARNING "TEST CMAKE_ARGS: $ENV{CMAKE_ARGS}")
 +message(WARNING "TEST target_platform: $ENV{target_platform}")
++message(WARNING "TEST filament_cxx_flags: ${filament_cxx_flags}")
++
++if(NOT DEFINED OPEN3D_THIRD_PARTY_DOWNLOAD_DIR)
++    set(OPEN3D_THIRD_PARTY_DOWNLOAD_DIR "${CMAKE_BINARY_DIR}/third_party" CACHE PATH "Directory for third-party downloads")
++endif()
 +
  ExternalProject_Add(
      ext_filament
