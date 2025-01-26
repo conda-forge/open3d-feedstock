@@ -104,6 +104,8 @@ requirements:
     - libclang           # [linux]
     - libcxx             # [linux]
     - libcxxabi          # [linux]
+    - gtest
+    - gmock
     # TODO: Consider for the future
     # - imgui      # TODO: Fails with error C2039: 'KeyMap': is not a member of 'ImGuiIO'
     # - libidn2  # [osx]
