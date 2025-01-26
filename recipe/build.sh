@@ -14,15 +14,14 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
     unset CFLAGS
     unset CXXFLAGS
 
-    cmake ${SRC_DIR} \
-      -DUSE_BLAS=OFF \
+    cmake ${SRC_DIR}/cmake/cross_compile_helpers \
       -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_PREFIX_PATH=$BUILD_PREFIX -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX \
+      -DCMAKE_PREFIX_PATH=$BUILD_PREFIX \
+      -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=True
-    # No need to compile everything, just ShaderEncoder and ShaderLinker is sufficient
-    cmake --build . --target ShaderEncoder --parallel ${CPU_COUNT} --config Release
-    cmake --build . --target ShaderLinker --parallel ${CPU_COUNT} --config Release
+
+    cmake --build . --parallel ${CPU_COUNT} --config Release
   )
 fi
 
