@@ -152,7 +152,14 @@ index 13f6501c8..c4e0adb57 100644
              include(${Open3D_3RDPARTY_DIR}/filament/filament_build.cmake)
          else()
              message(STATUS "Using prebuilt third-party library Filament")
-@@ -1332,20 +1255,6 @@ if(BUILD_GUI)
+@@ -1326,26 +1249,12 @@ if(BUILD_GUI)
+             LIBRARIES ${filament_LIBRARIES}
+             DEPENDS ext_filament
+         )
+-        set(FILAMENT_MATC "${FILAMENT_ROOT}/bin/matc")
++        set(FILAMENT_MATC "${FILAMENT_ROOT}/bin/matc" CACHE STRING "Path to the Filament matc executable")
+         target_link_libraries(3rdparty_filament INTERFACE Open3D::3rdparty_threads ${CMAKE_DL_LIBS})
+         if(UNIX AND NOT APPLE)
              # For ubuntu, llvm libs are located in /usr/lib/llvm-{version}/lib.
              # We first search for these paths, and then search CMake's default
              # search path. LLVM version must be >= 7 to compile Filament.
