@@ -1,3 +1,24 @@
+diff --git a/3rdparty/filament/CMakeLists.txt b/3rdparty/filament/CMakeLists.txt
+new file mode 100644
+index 000000000..89514be0a
+--- /dev/null
++++ b/3rdparty/filament/CMakeLists.txt
+@@ -0,0 +1,15 @@
++cmake_minimum_required(VERSION 3.14)
++
++# Define the main project
++project(FilamentProject LANGUAGES CXX)
++
++# Include the filament_build.cmake file
++include(${CMAKE_CURRENT_LIST_DIR}/filament_build.cmake)
++
++# Ensure the external Filament project is built before proceeding
++add_dependencies(${PROJECT_NAME} ext_filament)
++
++# Add install commands for the Filament project
++install(DIRECTORY ${FILAMENT_ROOT}/lib/ DESTINATION lib)
++install(DIRECTORY ${FILAMENT_ROOT}/include/ DESTINATION include)
++install(DIRECTORY ${FILAMENT_ROOT}/bin/ DESTINATION bin)
 diff --git a/3rdparty/filament/fix-ranlib-args.patch b/3rdparty/filament/fix-ranlib-args.patch
 new file mode 100644
 index 00000000000..394a0cbe363
