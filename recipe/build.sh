@@ -22,6 +22,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
       -DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=True
 
     cmake --build . --parallel ${CPU_COUNT} --config Release
+    cmake --build . --config Release --target install
   )
 fi
 
