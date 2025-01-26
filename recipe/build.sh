@@ -2,9 +2,6 @@ set -euxo pipefail
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
   (
-    mkdir -p build-host
-    pushd build-host
-
     export CC=$CC_FOR_BUILD
     export CXX=$CXX_FOR_BUILD
     export LDFLAGS=${LDFLAGS//$PREFIX/$BUILD_PREFIX}
@@ -13,6 +10,9 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
     # Unset them as we're ok with builds that are either slow or non-portable
     unset CFLAGS
     unset CXXFLAGS
+
+    mkdir -p build-host-shaders
+    pushd build-host-shaders
 
     cmake ${SRC_DIR}/cmake/cross_compile_helpers \
       -DCMAKE_BUILD_TYPE=Release \
@@ -23,6 +23,24 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
 
     cmake --build . --parallel ${CPU_COUNT} --config Release
     cmake --build . --config Release --target install
+    popd
+
+    mkdir -p build-host-filament
+    pushd build-host-filament
+
+    cmake ${SRC_DIR}/3rdparty/filament \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_PREFIX_PATH=$BUILD_PREFIX \
+      -DCMAKE_INSTALL_PREFIX=$BUILD_PREFIX \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DAPPLE_AARCH64=OFF \
+      -DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=True \
+      -DFILAMENT_C_COMPILER=${CC} \
+      -DFILAMENT_CXX_COMPILER=${CXX}
+
+    cmake --build . --parallel ${CPU_COUNT} --config Release
+    cmake --build . --config Release --target install
+    popd
   )
 fi
 
