@@ -11,3 +11,8 @@ os_version:
   linux_64: alma8
   linux_aarch64: alma8
 test: native_and_emulated
+azure:
+  settings_win:
+    variables:
+      CONDA_BLD_PATH: "C:\bld"
+      MINIFORGE_HOME: "C:\Miniforge"
