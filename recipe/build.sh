@@ -8,10 +8,10 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH//$PREFIX/$BUILD_PREFIX}
 
     # Unset them as we're ok with builds that are either slow or non-portable
-    # unset CFLAGS
-    # unset CXXFLAGS
+    unset CFLAGS
+    unset CXXFLAGS
 
-    export CONDA_BUILD_SYSROOT=$CONDA_PREFIX/$HOST/sysroot
+    # export CONDA_BUILD_SYSROOT=$CONDA_PREFIX/$HOST/sysroot
 
     mkdir -p build-host-shaders
     pushd build-host-shaders
