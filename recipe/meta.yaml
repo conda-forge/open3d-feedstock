@@ -49,8 +49,8 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - qt6-main                               # [build_platform != target_platform and not ppc64le]
     - libcxx 17                              # [osx]
-    - clangdev                               # [linux]
-    - clangxx                                # [linux]
+    # - clangdev                               # [linux]
+    # - clangxx                                # [linux]
   host:
     - libgl-devel                            # [linux]
     - xorg-libxdamage                        # [linux]
