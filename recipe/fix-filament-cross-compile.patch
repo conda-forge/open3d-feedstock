@@ -1,0 +1,279 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 354125dc0..d82da1f48 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -8,20 +8,12 @@ cmake_minimum_required(VERSION 3.24)
+ # CMAKE_HOST_SYSTEM_PROCESSOR is only available after calling project(),
+ # which depends on ${OPEN3D_VERSION}, which depends on ${DEVELOPER_BUILD}.
+ if(UNIX AND NOT APPLE)
+-    execute_process(COMMAND uname -m
+-        OUTPUT_VARIABLE PROCESSOR_ARCH
+-        OUTPUT_STRIP_TRAILING_WHITESPACE
+-    )
+-    if(PROCESSOR_ARCH STREQUAL "aarch64")
++    if($ENV{target_platform} STREQUAL "linux-aarch64")
+         set(LINUX_AARCH64 TRUE)
+     endif()
+ endif()
+ if(APPLE)
+-    execute_process(COMMAND uname -m
+-        OUTPUT_VARIABLE PROCESSOR_ARCH
+-        OUTPUT_STRIP_TRAILING_WHITESPACE
+-    )
+-    if(PROCESSOR_ARCH STREQUAL "arm64")
++    if($ENV{target_platform} STREQUAL "osx-arm64")
+         set(APPLE_AARCH64 TRUE)
+         set (CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING
+             "Minimum OS X deployment version" FORCE)
+diff --git a/3rdparty/filament/fix-werror.patch b/3rdparty/filament/fix-werror.patch
+new file mode 100644
+index 000000000..a7fdd9e83
+--- /dev/null
++++ b/3rdparty/filament/fix-werror.patch
+@@ -0,0 +1,14 @@
++diff --git a/third_party/spirv-cross/tnt/CMakeLists.txt b/third_party/spirv-cross/tnt/CMakeLists.txt
++index 25da48747ae..e3d47d84ecf 100644
++--- a/third_party/spirv-cross/tnt/CMakeLists.txt
+++++ b/third_party/spirv-cross/tnt/CMakeLists.txt
++@@ -37,7 +37,7 @@ endif()
++ # -DCMAKE_CXX_COMPILE_FLAGS
++ # However, we require the C++11 dialect.
++ if (NOT "${MSVC}")
++-  set(spirv-compiler-options ${spirv-compiler-options} -std=c++11 -Wall -Wextra -Werror -Wshadow)
+++  # set(spirv-compiler-options ${spirv-compiler-options} -std=c++11 -Wall -Wextra -Werror -Wshadow)
++   set(spirv-compiler-defines ${spirv-compiler-defines} __STDC_LIMIT_MACROS)
++ 
++   if(SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS)
++
+diff --git a/3rdparty/filament/CMakeLists.txt b/3rdparty/filament/CMakeLists.txt
+new file mode 100644
+index 000000000..a7ad3d288
+--- /dev/null
++++ b/3rdparty/filament/CMakeLists.txt
+@@ -0,0 +1,16 @@
++cmake_minimum_required(VERSION 3.14)
++
++# Define the main project
++project(FilamentProject LANGUAGES CXX)
++set(CMAKE_VERBOSE_MAKEFILE ON)
++# Include the filament_build.cmake file
++include(${CMAKE_CURRENT_LIST_DIR}/filament_build.cmake)
++
++# Ensure the external Filament project is built before proceeding
++add_custom_target(FilamentDummyTarget ALL)
++add_dependencies(FilamentDummyTarget ext_filament)
++
++# Add install commands for the Filament project
++install(DIRECTORY ${FILAMENT_ROOT}/lib/ DESTINATION lib)
++install(DIRECTORY ${FILAMENT_ROOT}/include/ DESTINATION include)
++install(DIRECTORY ${FILAMENT_ROOT}/bin/ DESTINATION bin)
+diff --git a/3rdparty/filament/fix-fdopen.patch b/3rdparty/filament/fix-fdopen.patch
+new file mode 100644
+index 000000000..91ce97d06
+--- /dev/null
++++ b/3rdparty/filament/fix-fdopen.patch
+@@ -0,0 +1,13 @@
++diff --git a/third_party/libz/zutil.h b/third_party/libz/zutil.h
++index b079ea6a80f..677b7c5f33f 100644
++--- a/third_party/libz/zutil.h
+++++ b/third_party/libz/zutil.h
++@@ -136,6 +136,7 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
++ #    if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os
++ #      include <unix.h> /* for fdopen */
++ #    else
+++#      include <stdio.h>
++ #      ifndef fdopen
++ #        define fdopen(fd,mode) NULL /* No fdopen() */
++ #      endif
++
+diff --git a/3rdparty/filament/fix-ranlib-args.patch b/3rdparty/filament/fix-ranlib-args.patch
+new file mode 100644
+index 00000000000..394a0cbe363
+--- /dev/null
++++ b/3rdparty/filament/fix-ranlib-args.patch
+@@ -0,0 +1,15 @@
++diff --git a/CMakeLists.txt b/CMakeLists.txt
++index 91ab2922d83..a62d702ea8c 100644
++--- a/CMakeLists.txt
+++++ b/CMakeLists.txt
++@@ -342,8 +342,8 @@ if (APPLE)
++     set(B_SYMBOLIC_FUNCTIONS "")
++ 
++     # tell ranlib to ignore empty compilation units
++-    set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
++-    set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols <TARGET>")
+++    set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> <TARGET>")
+++    set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> <TARGET>")
++     # prevents ar from invoking ranlib, let CMake do it
++     set(CMAKE_C_ARCHIVE_CREATE   "<CMAKE_AR> qc -S <TARGET> <LINK_FLAGS> <OBJECTS>")
++     set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qc -S <TARGET> <LINK_FLAGS> <OBJECTS>")
+diff --git a/3rdparty/filament/filament_build.cmake b/3rdparty/filament/filament_build.cmake
+index 432f55a28..08e179392 100644
+--- a/3rdparty/filament/filament_build.cmake
++++ b/3rdparty/filament/filament_build.cmake
+@@ -49,6 +49,14 @@ if(NOT WIN32)
+     set(filament_cxx_flags "${filament_cxx_flags} -fno-builtin")
+ endif()
+ 
++message(WARNING "TEST CMAKE_ARGS: $ENV{CMAKE_ARGS}")
++message(WARNING "TEST target_platform: $ENV{target_platform}")
++message(WARNING "TEST filament_cxx_flags: ${filament_cxx_flags}")
++
++if(NOT DEFINED OPEN3D_THIRD_PARTY_DOWNLOAD_DIR)
++    set(OPEN3D_THIRD_PARTY_DOWNLOAD_DIR "${CMAKE_BINARY_DIR}/third_party" CACHE PATH "Directory for third-party downloads")
++endif()
++
+ ExternalProject_Add(
+     ext_filament
+     PREFIX filament
+@@ -56,16 +64,15 @@ ExternalProject_Add(
+     URL_HASH SHA256=00c3f41af0fcfb2df904e1f77934f2678d943ddac5eb889788a5e22590e497bd
+     DOWNLOAD_DIR "${OPEN3D_THIRD_PARTY_DOWNLOAD_DIR}/filament"
+     UPDATE_COMMAND ""
++    PATCH_COMMAND git init
++    COMMAND git apply --ignore-space-change --ignore-whitespace
++        ${CMAKE_CURRENT_LIST_DIR}/fix-ranlib-args.patch
++        ${CMAKE_CURRENT_LIST_DIR}/fix-fdopen.patch
++        ${CMAKE_CURRENT_LIST_DIR}/fix-werror.patch
+     CMAKE_ARGS
+         ${ExternalProject_CMAKE_ARGS}
+         -DCMAKE_BUILD_TYPE=${FILAMENT_BUILD_TYPE}
+-        -DCCACHE_PROGRAM=OFF  # Enables ccache, "launch-cxx" is not working.
+         -DFILAMENT_ENABLE_JAVA=OFF
+-        -DCMAKE_C_COMPILER=${FILAMENT_C_COMPILER}
+-        -DCMAKE_CXX_COMPILER=${FILAMENT_CXX_COMPILER}
+-        -DCMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER}
+-        -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
+-        -DCMAKE_CXX_FLAGS:STRING=${filament_cxx_flags}
+         -DCMAKE_INSTALL_PREFIX=${FILAMENT_ROOT}
+         -DUSE_STATIC_CRT=${STATIC_WINDOWS_RUNTIME}
+         -DUSE_STATIC_LIBCXX=ON
+diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
+index 13f6501c8..c4e0adb57 100644
+--- a/3rdparty/find_dependencies.cmake
++++ b/3rdparty/find_dependencies.cmake
+@@ -1221,83 +1221,6 @@ if(BUILD_GUI)
+         set(FILAMENT_RUNTIME_VER "")
+         if(BUILD_FILAMENT_FROM_SOURCE)
+             message(STATUS "Building third-party library Filament from source")
+-            if(MSVC OR (CMAKE_C_COMPILER_ID MATCHES ".*Clang" AND
+-                CMAKE_CXX_COMPILER_ID MATCHES ".*Clang"
+-                AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7))
+-                set(FILAMENT_C_COMPILER "${CMAKE_C_COMPILER}")
+-                set(FILAMENT_CXX_COMPILER "${CMAKE_CXX_COMPILER}")
+-            else()
+-                message(STATUS "Filament can only be built with Clang >= 7")
+-                # First, check default version, because the user may have configured
+-                # a particular version as default for a reason.
+-                find_program(CLANG_DEFAULT_CC NAMES clang)
+-                find_program(CLANG_DEFAULT_CXX NAMES clang++)
+-                if(CLANG_DEFAULT_CC AND CLANG_DEFAULT_CXX)
+-                    execute_process(COMMAND ${CLANG_DEFAULT_CXX} --version OUTPUT_VARIABLE clang_version)
+-                    if(clang_version MATCHES "clang version ([0-9]+)")
+-                        if (CMAKE_MATCH_1 GREATER_EQUAL 7)
+-                            message(STATUS "Using ${CLANG_DEFAULT_CXX} to build Filament")
+-                            set(FILAMENT_C_COMPILER "${CLANG_DEFAULT_CC}")
+-                            set(FILAMENT_CXX_COMPILER "${CLANG_DEFAULT_CXX}")
+-                        endif()
+-                    endif()
+-                endif()
+-                # If the default version is not sufficient, look for some specific versions
+-                if(NOT FILAMENT_C_COMPILER OR NOT FILAMENT_CXX_COMPILER)
+-                    find_program(CLANG_VERSIONED_CC NAMES
+-                                 clang-19
+-                                 clang-18
+-                                 clang-17
+-                                 clang-16
+-                                 clang-15
+-                                 clang-14
+-                                 clang-13
+-                                 clang-12
+-                                 clang-11
+-                                 clang-10
+-                                 clang-9
+-                                 clang-8
+-                                 clang-7
+-                    )
+-                    find_program(CLANG_VERSIONED_CXX NAMES
+-                                 clang++-19
+-                                 clang++-18
+-                                 clang++-17
+-                                 clang++-16
+-                                 clang++-15
+-                                 clang++-14
+-                                 clang++-13
+-                                 clang++-12
+-                                 clang++-11
+-                                 clang++-10
+-                                 clang++-9
+-                                 clang++-8
+-                                 clang++-7
+-                    )
+-                    if (CLANG_VERSIONED_CC AND CLANG_VERSIONED_CXX)
+-                        set(FILAMENT_C_COMPILER "${CLANG_VERSIONED_CC}")
+-                        set(FILAMENT_CXX_COMPILER "${CLANG_VERSIONED_CXX}")
+-                        message(STATUS "Using ${CLANG_VERSIONED_CXX} to build Filament")
+-                    else()
+-                        message(FATAL_ERROR "Need Clang >= 7 to compile Filament from source")
+-                    endif()
+-                endif()
+-            endif()
+-            if (UNIX AND NOT APPLE)
+-                # Find corresponding libc++ and libc++abi libraries. On Ubuntu,
+-                # clang libraries are located at /usr/lib/llvm-{version}/lib,
+-                # and the default version will have a sybolic link at
+-                # /usr/lib/x86_64-linux-gnu/ or /usr/lib/aarch64-linux-gnu.
+-                #
+-                # On aarch64, the symbolic link path may not work for CMake's
+-                # find_library. Therefore, when compiling Filament from source,
+-                # we explicitly find the corresponding path based on the clang
+-                # version.
+-                execute_process(COMMAND ${FILAMENT_CXX_COMPILER} --version OUTPUT_VARIABLE clang_version)
+-                if(clang_version MATCHES "clang version ([0-9]+)")
+-                    set(CLANG_LIBDIR "/usr/lib/llvm-${CMAKE_MATCH_1}/lib")
+-                endif()
+-            endif()
+             include(${Open3D_3RDPARTY_DIR}/filament/filament_build.cmake)
+         else()
+             message(STATUS "Using prebuilt third-party library Filament")
+@@ -1326,26 +1249,12 @@ if(BUILD_GUI)
+             LIBRARIES ${filament_LIBRARIES}
+             DEPENDS ext_filament
+         )
+-        set(FILAMENT_MATC "${FILAMENT_ROOT}/bin/matc")
++        set(FILAMENT_MATC "${FILAMENT_ROOT}/bin/matc" CACHE STRING "Path to the Filament matc executable")
+         target_link_libraries(3rdparty_filament INTERFACE Open3D::3rdparty_threads ${CMAKE_DL_LIBS})
+         if(UNIX AND NOT APPLE)
+             # For ubuntu, llvm libs are located in /usr/lib/llvm-{version}/lib.
+             # We first search for these paths, and then search CMake's default
+             # search path. LLVM version must be >= 7 to compile Filament.
+-            if (NOT CLANG_LIBDIR)
+-                message(STATUS "Searching /usr/lib/llvm-[7..19]/lib/ for libc++ and libc++abi")
+-                foreach(llvm_ver RANGE 7 19)
+-                    set(llvm_lib_dir "/usr/lib/llvm-${llvm_ver}/lib")
+-                    find_library(CPP_LIBRARY    c++ PATHS ${llvm_lib_dir} NO_DEFAULT_PATH)
+-                    find_library(CPPABI_LIBRARY c++abi PATHS ${llvm_lib_dir} NO_DEFAULT_PATH)
+-                    if (CPP_LIBRARY AND CPPABI_LIBRARY)
+-                        set(CLANG_LIBDIR ${llvm_lib_dir})
+-                        message(STATUS "CLANG_LIBDIR found in ubuntu-default: ${CLANG_LIBDIR}")
+-                        set(LIBCPP_VERSION ${llvm_ver})
+-                        break()
+-                    endif()
+-                endforeach()
+-            endif()
+ 
+             # Fallback to non-ubuntu-default paths. Note that the PATH_SUFFIXES
+             # is not enforced by CMake.
+@@ -1595,9 +1504,9 @@ else(OPEN3D_USE_ONEAPI_PACKAGES)
+     # MKL/BLAS
+     if(USE_BLAS)
+         if (USE_SYSTEM_BLAS)
+-            find_package(BLAS)
+-            find_package(LAPACK)
+-            find_package(LAPACKE)
++            find_package(BLAS REQUIRED)
++            find_package(LAPACK REQUIRED)
++            find_package(LAPACKE REQUIRED)
+             if(BLAS_FOUND AND LAPACK_FOUND AND LAPACKE_FOUND)
+                 message(STATUS "System BLAS/LAPACK/LAPACKE found.")
+                 list(APPEND Open3D_3RDPARTY_PRIVATE_TARGETS_FROM_SYSTEM

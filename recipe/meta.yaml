@@ -12,11 +12,14 @@ source:
     - fix-unzip.patch
     - fix-curl.patch  # [not win]
     - fix-error.patch
-    - fix-find-imgui.patch
+    # - fix-find-imgui.patch
     - fix-cross-compile-shader.patch  # [build_platform != target_platform]
+    - fix-cross-compile-lapacke.patch  # [build_platform != target_platform]
     - fix-crypto.patch  # [osx]
     - fix-win-extractzip.patch  # [win]
     - fix-win-minizip.patch  # [win]
+    - fix-missing-memory-include.patch
+    - fix-filament-cross-compile.patch  # [build_platform != target_platform]
 
 build:
   number: 1
@@ -38,6 +41,7 @@ requirements:
     - cmake
     - make
     - pkg-config
+    - git
     - llvm-openmp                            # [osx]
     - libgomp                                # [linux]
     - python                                 # [build_platform != target_platform]
@@ -45,12 +49,14 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - qt6-main                               # [build_platform != target_platform and not ppc64le]
     - libcxx 17                              # [osx]
+    # - clangdev                               # [linux]
+    # - clangxx                                # [linux]
   host:
-    - libcxx >=7                             # [aarch64]
     - libgl-devel                            # [linux]
     - xorg-libxdamage                        # [linux]
     - xorg-libxfixes                         # [linux]
     - libxcb                                 # [linux]
+    - xorg-libx11                            # [linux]
     - setuptools
     - python
     - pip
@@ -80,6 +86,7 @@ requirements:
     - qhull-static       # [not win]
     - tinyobjloader
     - libcblas           # [not win]
+    - liblapack          # [not win]
     - liblapacke         # [not win]
     - liblapack * *mkl   # [win]
     - liblapacke * *mkl  # [win]
@@ -91,9 +98,17 @@ requirements:
     - openssl            # [not linux]
     - tbb-devel
     - liblzma-devel      # [win]
+    - libvulkan-loader
+    - libvulkan-headers
+    - clangdev           # [linux]
+    - libclang           # [linux]
+    - libcxx             # [linux]
+    - libcxxabi          # [linux]
+    - gtest
+    - gmock
     # TODO: Consider for the future
+    # - imgui      # TODO: Fails with error C2039: 'KeyMap': is not a member of 'ImGuiIO'
     # - libidn2  # [osx]
-    # - imgui      # Not used currently as we are not building the GUI
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
   run:
     - numpy
@@ -103,10 +118,12 @@ requirements:
     - vtk-base * qt*
     - libblas * *mkl  # [win]
     - minizip         # [win]
+    - {{ pin_compatible('libcxx', min_pin='x.x', max_pin='x.x') }}  # [linux]
 
 test:
   imports:
     - open3d
+    - open3d.visualization
   commands:
     - open3d --help
 
@@ -117,6 +134,7 @@ about:
   license_file:
     - LICENSE
     - 3rdparty/curl/LICENSE  # [win]
+    - 3rdparty/imgui/LICENSE
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas

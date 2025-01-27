@@ -1,3 +1,30 @@
+diff --git a/cmake/cross_compile_helpers/CMakeLists.txt b/cmake/cross_compile_helpers/CMakeLists.txt
+new file mode 100644
+index 000000000..fc32210ab
+--- /dev/null
++++ b/cmake/cross_compile_helpers/CMakeLists.txt
+@@ -0,0 +1,21 @@
++cmake_minimum_required(VERSION 3.14)
++
++# Define the project
++project(CrossCompileHelpers LANGUAGES CXX)
++
++# Add the ShaderEncoder executable
++add_executable(ShaderEncoder)
++target_sources(ShaderEncoder PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../ShaderEncoder.cpp)
++target_compile_features(ShaderEncoder PRIVATE cxx_std_14)
++
++# Add the ShaderLinker executable
++add_executable(ShaderLinker)
++target_sources(ShaderLinker PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../ShaderLinker.cpp)
++target_compile_features(ShaderLinker PRIVATE cxx_std_14)
++
++# Specify installation targets
++install(TARGETS ShaderEncoder ShaderLinker
++    RUNTIME DESTINATION bin           # For executables
++    LIBRARY DESTINATION lib           # If there are shared libraries (not applicable here)
++    ARCHIVE DESTINATION lib           # For static libraries (not applicable here)
++)
 diff --git a/cmake/Open3DAddEncodedShader.cmake b/cmake/Open3DAddEncodedShader.cmake
 index 36bcbb8353c..f293a19a6f6 100644
 --- a/cmake/Open3DAddEncodedShader.cmake
