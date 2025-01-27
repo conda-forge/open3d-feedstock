@@ -11,6 +11,8 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
     # unset CFLAGS
     # unset CXXFLAGS
 
+    export CONDA_BUILD_SYSROOT=$CONDA_PREFIX/$HOST/sysroot
+
     mkdir -p build-host-shaders
     pushd build-host-shaders
 
