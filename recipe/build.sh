@@ -5,11 +5,21 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
     export CC=$CC_FOR_BUILD
     export CXX=$CXX_FOR_BUILD
     export LDFLAGS=${LDFLAGS//$PREFIX/$BUILD_PREFIX}
+    export CMAKE_ARGS=${CMAKE_ARGS//$PREFIX/$BUILD_PREFIX}
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH//$PREFIX/$BUILD_PREFIX}
+    export AR=($CC_FOR_BUILD -print-prog-name=ar)
+    export NM=($CC_FOR_BUILD -print-prog-name=nm)
+    if [[ "${target_platform}" == osx-* ]]; then
+      export OBJC=$OBJC_FOR_BUILD
+    fi
 
     # Unset them as we're ok with builds that are either slow or non-portable
     unset CFLAGS
     unset CXXFLAGS
+
+    export CPPFLAGS="-isystem $BUILD_PREFIX/include -DCONDA_PREFIX=\\\"$BUILD_PREFIX\\\""
+    export host_alias=$build_alias
+
 
     # export CONDA_BUILD_SYSROOT=$CONDA_PREFIX/$HOST/sysroot
 
