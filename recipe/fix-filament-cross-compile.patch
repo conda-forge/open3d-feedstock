@@ -25,6 +25,26 @@ index 354125dc0..d82da1f48 100644
          set(APPLE_AARCH64 TRUE)
          set (CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING
              "Minimum OS X deployment version" FORCE)
+diff --git a/3rdparty/filament/fix-werror.patch b/3rdparty/filament/fix-werror.patch
+new file mode 100644
+index 000000000..a7fdd9e83
+--- /dev/null
++++ b/3rdparty/filament/fix-werror.patch
+@@ -0,0 +1,14 @@
++diff --git a/third_party/spirv-cross/tnt/CMakeLists.txt b/third_party/spirv-cross/tnt/CMakeLists.txt
++index 25da48747ae..e3d47d84ecf 100644
++--- a/third_party/spirv-cross/tnt/CMakeLists.txt
+++++ b/third_party/spirv-cross/tnt/CMakeLists.txt
++@@ -37,7 +37,7 @@ endif()
++ # -DCMAKE_CXX_COMPILE_FLAGS
++ # However, we require the C++11 dialect.
++ if (NOT "${MSVC}")
++-  set(spirv-compiler-options ${spirv-compiler-options} -std=c++11 -Wall -Wextra -Werror -Wshadow)
+++  # set(spirv-compiler-options ${spirv-compiler-options} -std=c++11 -Wall -Wextra -Werror -Wshadow)
++   set(spirv-compiler-defines ${spirv-compiler-defines} __STDC_LIMIT_MACROS)
++ 
++   if(SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS)
++
 diff --git a/3rdparty/filament/CMakeLists.txt b/3rdparty/filament/CMakeLists.txt
 new file mode 100644
 index 000000000..a7ad3d288
@@ -106,7 +126,7 @@ index 432f55a28..08e179392 100644
  ExternalProject_Add(
      ext_filament
      PREFIX filament
-@@ -56,16 +64,14 @@ ExternalProject_Add(
+@@ -56,16 +64,15 @@ ExternalProject_Add(
      URL_HASH SHA256=00c3f41af0fcfb2df904e1f77934f2678d943ddac5eb889788a5e22590e497bd
      DOWNLOAD_DIR "${OPEN3D_THIRD_PARTY_DOWNLOAD_DIR}/filament"
      UPDATE_COMMAND ""
@@ -114,6 +134,7 @@ index 432f55a28..08e179392 100644
 +    COMMAND git apply --ignore-space-change --ignore-whitespace
 +        ${CMAKE_CURRENT_LIST_DIR}/fix-ranlib-args.patch
 +        ${CMAKE_CURRENT_LIST_DIR}/fix-fdopen.patch
++        ${CMAKE_CURRENT_LIST_DIR}/fix-werror.patch
      CMAKE_ARGS
          ${ExternalProject_CMAKE_ARGS}
          -DCMAKE_BUILD_TYPE=${FILAMENT_BUILD_TYPE}
