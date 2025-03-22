@@ -43,12 +43,12 @@ python:
 qhull:
 - '2020.2'
 qt6_main:
-- '6.7'
+- '6.8'
 target_platform:
 - win-64
 tbb_devel:
 - '2021'
 vtk:
-- 9.3.1
+- 9.4.1
 zeromq:
 - 4.3.5
