@@ -84,6 +84,7 @@ requirements:
     - liblapack * *mkl   # [win]
     - liblapacke * *mkl  # [win]
     - mkl-devel          # [win]
+    - nomkl              # [not win]
     - libboost-headers
     - nanoflann
     - liblzf
