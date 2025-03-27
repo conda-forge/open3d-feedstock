@@ -21,7 +21,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '18'
 fmt:
-- '11'
+- '11.1'
 glew:
 - '2.1'
 jsoncpp:
@@ -57,7 +57,7 @@ python:
 qhull:
 - '2020.2'
 qt6_main:
-- '6.7'
+- '6.8'
 target_platform:
 - osx-64
 tbb_devel:
