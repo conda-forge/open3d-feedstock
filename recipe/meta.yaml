@@ -46,6 +46,8 @@ requirements:
     - qt6-main                               # [build_platform != target_platform and not ppc64le]
   host:
     - libgl-devel                            # [linux]
+    - libglx-devel                           # [linux]
+    - libopengl-devel                        # [linux]
     - xorg-libxdamage                        # [linux]
     - xorg-libxfixes                         # [linux]
     - libxcb                                 # [linux]
