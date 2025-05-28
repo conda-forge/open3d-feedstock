@@ -19,7 +19,7 @@ source:
     - fix-win-minizip.patch  # [win]
 
 build:
-  number: 2
+  number: 3
   entry_points:
     - open3d = open3d.tools.cli:main
   ignore_run_exports_from:
@@ -44,10 +44,11 @@ requirements:
     - pip                                    # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - qt6-main                               # [build_platform != target_platform and not ppc64le]
-    - libcxx 17                              # [osx]
   host:
     - libcxx >=7                             # [aarch64]
     - libgl-devel                            # [linux]
+    - libglx-devel                           # [linux]
+    - libopengl-devel                        # [linux]
     - xorg-libxdamage                        # [linux]
     - xorg-libxfixes                         # [linux]
     - libxcb                                 # [linux]
@@ -69,11 +70,8 @@ requirements:
     - msgpack-c
     - msgpack-cxx
     - minizip
-    - vtk * qt*
-    - qt6-main
-    # We have also a vanilla dependency of vtk without pins so that conda-smithy correctly sets the
-    # pin from conda-forge-pinnings
     - vtk
+    - qt6-main
     - libpng
     - pybind11
     - qhull
@@ -101,7 +99,6 @@ requirements:
     - python
     - plotly
     - dash
-    - vtk-base * qt*
     - libblas * *mkl  # [win]
     - minizip         # [win]
 
