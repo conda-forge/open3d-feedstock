@@ -17,7 +17,7 @@ glew:
 jsoncpp:
 - 1.9.6
 libboost_headers:
-- '1.86'
+- '1.88'
 libcblas:
 - 3.9.* *netlib
 libjpeg_turbo:
