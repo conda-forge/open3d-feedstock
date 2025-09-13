@@ -1,25 +1,15 @@
-MACOSX_DEPLOYMENT_TARGET:
-- '11.0'
-MACOSX_SDK_VERSION:
-- '11.0'
 assimp:
 - 5.4.3
 c_compiler:
-- clang
-c_compiler_version:
-- '18'
+- vs2022
 c_stdlib:
-- macosx_deployment_target
-c_stdlib_version:
-- '11.0'
+- vs
 channel_sources:
-- conda-forge
+- conda-forge,conda-forge/label/python_rc
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- clangxx
-cxx_compiler_version:
-- '18'
+- vs2022
 fmt:
 - '11.2'
 glew:
@@ -30,18 +20,14 @@ libboost_headers:
 - '1.86'
 libcblas:
 - 3.9.* *netlib
-libcurl:
-- '8'
 libjpeg_turbo:
 - '3'
-liblapacke:
-- 3.9.* *netlib
+liblzma_devel:
+- '5'
 libpng:
 - '1.6'
-llvm_openmp:
-- '18'
-macos_machine:
-- arm64-apple-darwin20.0.0
+mkl_devel:
+- '2024'
 msgpack_c:
 - '6'
 msgpack_cxx:
@@ -53,13 +39,13 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.9.* *_cpython
+- 3.14.* *_cp314
 qhull:
 - '2020.2'
 qt6_main:
 - '6.9'
 target_platform:
-- osx-arm64
+- win-64
 tbb_devel:
 - '2021'
 vtk:
@@ -67,5 +53,5 @@ vtk:
 zeromq:
 - 4.3.5
 zip_keys:
-- - c_compiler_version
-  - cxx_compiler_version
+- - python
+  - channel_sources

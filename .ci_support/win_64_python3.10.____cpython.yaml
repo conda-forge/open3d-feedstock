@@ -52,3 +52,6 @@ vtk:
 - 9.4.2
 zeromq:
 - 4.3.5
+zip_keys:
+- - python
+  - channel_sources
