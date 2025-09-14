@@ -17,6 +17,8 @@ source:
     - fix-crypto.patch  # [osx]
     - fix-win-extractzip.patch  # [win]
     - fix-win-minizip.patch  # [win]
+    # Taken relevant parts for https://github.com/isl-org/Open3D/pull/7140
+    - 7140-parts.patch  # [win]
 
 build:
   number: 5
@@ -94,6 +96,7 @@ requirements:
     # - libidn2  # [osx]
     # - imgui      # Not used currently as we are not building the GUI
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
+    # - pytorch
   run:
     - numpy
     - python
