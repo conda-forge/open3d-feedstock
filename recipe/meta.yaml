@@ -17,8 +17,6 @@ source:
     - fix-crypto.patch  # [osx]
     - fix-win-extractzip.patch  # [win]
     - fix-win-minizip.patch  # [win]
-    # Taken relevant parts for https://github.com/isl-org/Open3D/pull/7140
-    - 7140-parts.patch  # [win]
 
 build:
   number: 5
