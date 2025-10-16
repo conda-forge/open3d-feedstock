@@ -23,7 +23,7 @@ cxx_compiler_version:
 fmt:
 - '11.2'
 glew:
-- '2.1'
+- '2.2'
 jsoncpp:
 - 1.9.6
 libboost_headers:
@@ -63,7 +63,7 @@ target_platform:
 tbb_devel:
 - '2021'
 vtk:
-- 9.4.2
+- 9.5.1
 zeromq:
 - 4.3.5
 zip_keys:
