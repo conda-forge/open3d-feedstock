@@ -13,11 +13,11 @@ cxx_compiler:
 fmt:
 - '11.2'
 glew:
-- '2.1'
+- '2.2'
 jsoncpp:
 - 1.9.6
 libboost_headers:
-- '1.86'
+- '1.88'
 libcblas:
 - 3.9.* *netlib
 libjpeg_turbo:
@@ -38,6 +38,8 @@ pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
+pybind11_abi:
+- '4'
 python:
 - 3.11.* *_cpython
 qhull:
@@ -49,6 +51,6 @@ target_platform:
 tbb_devel:
 - '2021'
 vtk:
-- 9.4.2
+- 9.5.1
 zeromq:
 - 4.3.5

@@ -17,9 +17,10 @@ source:
     - fix-crypto.patch  # [osx]
     - fix-win-extractzip.patch  # [win]
     - fix-win-minizip.patch  # [win]
+    - 7335.patch  # [win]
 
 build:
-  number: 4
+  number: 5
   entry_points:
     - open3d = open3d.tools.cli:main
   ignore_run_exports_from:
@@ -74,6 +75,7 @@ requirements:
     - qt6-main
     - libpng
     - pybind11
+    - pybind11-abi
     - qhull
     - qhull-static       # [not win]
     - tinyobjloader
@@ -94,6 +96,7 @@ requirements:
     # - libidn2  # [osx]
     # - imgui      # Not used currently as we are not building the GUI
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
+    # - pytorch
   run:
     - numpy
     - python
@@ -128,3 +131,4 @@ extra:
   recipe-maintainers:
     - goanpeca
     - Tobias-Fischer
+    - traversaro
