@@ -75,6 +75,7 @@ requirements:
     - qt6-main
     - libpng
     - pybind11
+    - pybind11-abi
     - qhull
     - qhull-static       # [not win]
     - tinyobjloader
