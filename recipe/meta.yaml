@@ -17,6 +17,7 @@ source:
     - fix-crypto.patch  # [osx]
     - fix-win-extractzip.patch  # [win]
     - fix-win-minizip.patch  # [win]
+    - 7335.patch  # [win]
 
 build:
   number: 5
@@ -129,3 +130,5 @@ extra:
   recipe-maintainers:
     - goanpeca
     - Tobias-Fischer
+    - traversaro
+
