@@ -65,7 +65,7 @@ target_platform:
 tbb_devel:
 - '2021'
 vtk:
-- 9.5.1
+- 9.5.2
 zeromq:
 - 4.3.5
 zip_keys:
