@@ -11,7 +11,7 @@ channel_targets:
 cxx_compiler:
 - vs2022
 fmt:
-- '11.2'
+- '12.0'
 glew:
 - '2.2'
 jsoncpp:
@@ -27,13 +27,13 @@ liblzma_devel:
 libpng:
 - '1.6'
 mkl_devel:
-- '2024'
+- '2025'
 msgpack_c:
 - '6'
 msgpack_cxx:
 - '7'
 openssl:
-- '3'
+- '3.5'
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -49,8 +49,8 @@ qt6_main:
 target_platform:
 - win-64
 tbb_devel:
-- '2021'
+- '2022'
 vtk:
-- 9.5.1
+- 9.5.2
 zeromq:
 - 4.3.5
