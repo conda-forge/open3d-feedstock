@@ -27,7 +27,7 @@ liblzma_devel:
 libpng:
 - '1.6'
 mkl_devel:
-- '2024'
+- '2025'
 msgpack_c:
 - '6'
 msgpack_cxx:
