@@ -19,9 +19,9 @@ cxx_compiler_version:
 docker_image:
 - quay.io/condaforge/linux-anvil-x86_64:alma9
 fmt:
-- '12.0'
+- '12.1'
 glew:
-- '2.2'
+- '2.3'
 jsoncpp:
 - 1.9.6
 libboost_headers:
