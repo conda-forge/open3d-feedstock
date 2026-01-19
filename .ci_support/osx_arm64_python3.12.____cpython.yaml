@@ -21,9 +21,9 @@ cxx_compiler:
 cxx_compiler_version:
 - '18'
 fmt:
-- '12.0'
+- '12.1'
 glew:
-- '2.2'
+- '2.3'
 jsoncpp:
 - 1.9.6
 libboost_headers:
