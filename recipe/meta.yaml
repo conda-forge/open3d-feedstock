@@ -20,7 +20,7 @@ source:
     - 7335.patch  # [win]
 
 build:
-  number: 9
+  number: 10
   entry_points:
     - open3d = open3d.tools.cli:main
   ignore_run_exports_from:
