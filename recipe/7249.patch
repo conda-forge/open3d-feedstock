@@ -51,7 +51,7 @@ diff --git a/cpp/pybind/core/device.cpp b/cpp/pybind/core/device.cpp
 index b0a97f42c59..0e3e3185f5c 100644
 --- a/cpp/pybind/core/device.cpp
 +++ b/cpp/pybind/core/device.cpp
-@@ -18,11 +18,12 @@ void pybind_core_device_declarations(py::module &m) {
+@@ -18,10 +18,11 @@ void pybind_core_device_declarations(py::module &m) {
      py::class_<Device> device(
              m, "Device",
              "Device context specifying device type and device id.");
@@ -59,7 +59,6 @@ index b0a97f42c59..0e3e3185f5c 100644
 +    py::native_enum<Device::DeviceType>(device, "DeviceType", "enum.Enum")
              .value("CPU", Device::DeviceType::CPU)
              .value("CUDA", Device::DeviceType::CUDA)
-             .value("SYCL", Device::DeviceType::SYCL)
 -            .export_values();
 +            .export_values()
 +            .finalize();
@@ -421,24 +420,24 @@ diff --git a/cpp/pybind/geometry/voxelgrid.cpp b/cpp/pybind/geometry/voxelgrid.c
 index 6d9f203ee55..d0ce7ed7fea 100644
 --- a/cpp/pybind/geometry/voxelgrid.cpp
 +++ b/cpp/pybind/geometry/voxelgrid.cpp
-@@ -28,13 +28,14 @@ void pybind_voxelgrid_declarations(py::module &m) {
-             voxelgrid(m, "VoxelGrid",
-                       "VoxelGrid is a collection of voxels which are aligned "
-                       "in grid.");
--    py::enum_<VoxelGrid::VoxelPoolingMode>(
+@@ -64,13 +64,14 @@ void pybind_voxelgrid_definitions(py::module &m) {
+                                    std::shared_ptr<VoxelGrid>, Geometry3D>>(
+                     m.attr("VoxelGrid"));
+ 
+-    py::enum_<VoxelGrid::VoxelPoolingMode> pooling_mode(
 -            voxelgrid, "VoxelPoolingMode",
 +    py::native_enum<VoxelGrid::VoxelPoolingMode>(
 +            voxelgrid, "VoxelPoolingMode", "enum.Enum",
-             "Mode of determining color for each voxel.")
-             .value("AVG", VoxelGrid::VoxelPoolingMode::AVG)
+             "Mode of determining color for each voxel.");
+     pooling_mode.value("AVG", VoxelGrid::VoxelPoolingMode::AVG)
              .value("MIN", VoxelGrid::VoxelPoolingMode::MIN)
              .value("MAX", VoxelGrid::VoxelPoolingMode::MAX)
 -            .value("SUM", VoxelGrid::VoxelPoolingMode::SUM);
 +            .value("SUM", VoxelGrid::VoxelPoolingMode::SUM)
 +            .finalize();
- }
- void pybind_voxelgrid_definitions(py::module &m) {
-     auto voxel = static_cast<py::class_<Voxel, std::shared_ptr<Voxel>>>(
+ 
+     py::detail::bind_default_constructor<VoxelGrid>(voxelgrid);
+     py::detail::bind_copy_functions<VoxelGrid>(voxelgrid);
 diff --git a/cpp/pybind/io/class_io.cpp b/cpp/pybind/io/class_io.cpp
 index e422af14654..ce4d1c0ea81 100644
 --- a/cpp/pybind/io/class_io.cpp
@@ -527,7 +526,7 @@ diff --git a/cpp/pybind/t/geometry/geometry.cpp b/cpp/pybind/t/geometry/geometry
 index 5b1e3deccdf..fe200593da7 100644
 --- a/cpp/pybind/t/geometry/geometry.cpp
 +++ b/cpp/pybind/t/geometry/geometry.cpp
-@@ -49,24 +49,28 @@ void pybind_geometry_declarations(py::module& m) {
+@@ -49,15 +49,16 @@ void pybind_geometry_declarations(py::module& m) {
      py::module m_geometry = m.def_submodule(
              "geometry", "Tensor-based geometry defining module.");
  
@@ -547,20 +546,6 @@ index 5b1e3deccdf..fe200593da7 100644
      py::class_<MetricParameters> metric_parameters(
              m_geometry, "MetricParameters",
              "Holder for various parameters required by metrics.");
- 
--    py::enum_<MethodOBBCreate>(m_geometry, "MethodOBBCreate")
-+    py::native_enum<MethodOBBCreate>(
-+            m_geometry, "MethodOBBCreate", "enum.Enum",
-+            "Methods for creating oriented bounding boxes.")
-             .value("PCA", MethodOBBCreate::PCA)
-             .value("MINIMAL_APPROX", MethodOBBCreate::MINIMAL_APPROX)
-             .value("MINIMAL_JYLANKI", MethodOBBCreate::MINIMAL_JYLANKI)
--            .export_values();
-+            .export_values()
-+            .finalize();
- 
-     pybind_geometry_class_declarations(m_geometry);
-     pybind_drawable_geometry_class_declarations(m_geometry);
 diff --git a/cpp/pybind/t/geometry/image.cpp b/cpp/pybind/t/geometry/image.cpp
 index 1d63432f1c6..a2278a1ef9f 100644
 --- a/cpp/pybind/t/geometry/image.cpp
