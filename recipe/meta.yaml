@@ -18,6 +18,7 @@ source:
     - fix-win-extractzip.patch  # [win]
     - fix-win-minizip.patch  # [win]
     - 7335.patch  # [win]
+    - 7249.patch
 
 build:
   number: 10
