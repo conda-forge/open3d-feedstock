@@ -426,7 +426,7 @@ index 6d9f203ee55..d0ce7ed7fea 100644
  
 -    py::enum_<VoxelGrid::VoxelPoolingMode> pooling_mode(
 -            voxelgrid, "VoxelPoolingMode",
-+    py::native_enum<VoxelGrid::VoxelPoolingMode>(
++    py::native_enum<VoxelGrid::VoxelPoolingMode> pooling_mode(
 +            voxelgrid, "VoxelPoolingMode", "enum.Enum",
              "Mode of determining color for each voxel.");
      pooling_mode.value("AVG", VoxelGrid::VoxelPoolingMode::AVG)
