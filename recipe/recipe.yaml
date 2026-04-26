@@ -49,8 +49,6 @@ requirements:
     - if: linux
       then: libgomp
   host:
-    - if: aarch64
-      then: libcxx >=7
     - if: linux
       then:
         - libgl-devel
@@ -60,6 +58,10 @@ requirements:
         - xorg-libxfixes
         - libxcb
         - xorg-libx11
+        - clangdev
+        - libclang
+        - libcxx
+        - libcxxabi
     - setuptools
     - python
     - pip
