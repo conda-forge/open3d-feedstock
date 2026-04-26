@@ -25,7 +25,7 @@ glew:
 jsoncpp:
 - 1.9.6
 libboost_headers:
-- '1.88'
+- '1.90'
 libcblas:
 - 3.9.* *netlib
 libcurl:
