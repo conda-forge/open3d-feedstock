@@ -45,7 +45,7 @@ requirements:
     - make
     - pkg-config
     - git
-    - if: osx
+    - if: osx or (linux and aarch64)
       then: llvm-openmp
     - if: linux
       then: libgomp
