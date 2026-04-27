@@ -6,6 +6,14 @@ cd build
 
 export QT_HOST_PATH="$PREFIX"
 
+if [[ "$target_platform" == "linux-aarch64" ]]; then
+    # The clang toolchain here does not ship LLVMgold.so, so -flto=auto causes
+    # pybind link to fail when ld tries to load the plugin.
+    export CFLAGS="${CFLAGS//-flto=auto/} -fno-lto"
+    export CXXFLAGS="${CXXFLAGS//-flto=auto/} -fno-lto"
+    export LDFLAGS="${LDFLAGS//-flto=auto/} -fno-lto"
+fi
+
 cmake ${SRC_DIR} ${CMAKE_ARGS} \
     -DCLANG_LIBDIR=${PREFIX}/lib \
     -DFILAMENT_C_COMPILER=${CC} \
