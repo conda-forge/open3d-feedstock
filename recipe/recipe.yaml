@@ -28,10 +28,10 @@ source:
     - 7249.patch
     - fix-requirements-txt.patch
     - fix-missing-memory-include.patch
-    if: linux and aarch64
-    then:
-      - fix-filament.patch
-      - fix-filament-libstdcxx.patch
+    - if: linux and aarch64
+      then:
+        - fix-filament.patch
+        - fix-filament-libstdcxx.patch
 
 build:
   number: ${{ build_number }}
