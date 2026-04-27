@@ -28,7 +28,7 @@ source:
     - 7249.patch
     - fix-requirements-txt.patch
     - fix-missing-memory-include.patch
-    - fix-clang-libdir-filament.patch
+    - fix-filament.patch
 
 build:
   number: ${{ build_number }}
