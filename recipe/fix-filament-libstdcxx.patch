@@ -1,0 +1,18 @@
+diff --git a/3rdparty/filament/filament_build.cmake b/3rdparty/filament/filament_build.cmake
+index 432f55a28..363ec0a46 100644
+--- a/3rdparty/filament/filament_build.cmake
++++ b/3rdparty/filament/filament_build.cmake
+@@ -65,11 +65,11 @@ ExternalProject_Add(
+         -DCMAKE_C_COMPILER=${FILAMENT_C_COMPILER}
+         -DCMAKE_CXX_COMPILER=${FILAMENT_CXX_COMPILER}
+         -DCMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER}
+         -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
+-        -DCMAKE_CXX_FLAGS:STRING=${filament_cxx_flags}
++        "-DCMAKE_CXX_FLAGS:STRING=${filament_cxx_flags} -stdlib=libstdc++ -include iterator -include cstdint -include limits -include cstring"
+         -DCMAKE_INSTALL_PREFIX=${FILAMENT_ROOT}
+         -DUSE_STATIC_CRT=${STATIC_WINDOWS_RUNTIME}
+-        -DUSE_STATIC_LIBCXX=ON
++        -DUSE_STATIC_LIBCXX=OFF
+         -DFILAMENT_SUPPORTS_VULKAN=OFF
+         -DFILAMENT_SKIP_SAMPLES=ON
+         -DFILAMENT_OPENGL_HANDLE_ARENA_SIZE_IN_MB=20 # to support many small entities
