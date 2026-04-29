@@ -6,19 +6,32 @@ cd build
 
 export QT_HOST_PATH="$PREFIX"
 
+if [[ "$target_platform" == "linux-aarch64" ]]; then
+    # The clang toolchain here does not ship LLVMgold.so, so -flto=auto causes
+    # pybind link to fail when ld tries to load the plugin.
+    export CFLAGS="${CFLAGS//-flto=auto/} -fno-lto"
+    export CXXFLAGS="${CXXFLAGS//-flto=auto/} -fno-lto"
+    export LDFLAGS="${LDFLAGS//-flto=auto/} -fno-lto"
+fi
+
 cmake ${SRC_DIR} ${CMAKE_ARGS} \
+    -DCLANG_LIBDIR=${PREFIX}/lib \
+    -DFILAMENT_C_COMPILER=${CC} \
+    -DFILAMENT_CXX_COMPILER=${CXX} \
     -DBUILD_AZURE_KINECT=OFF \
+    -DBUILD_BENCHMARKS=OFF \
     -DBUILD_CUDA_MODULE=OFF \
     -DBUILD_COMMON_CUDA_ARCHS=OFF \
     -DBUILD_CACHED_CUDA_MANAGER=OFF \
     -DBUILD_EXAMPLES=OFF \
     -DBUILD_ISPC_MODULE=OFF \
-    -DBUILD_GUI=OFF \
+    -DBUILD_GUI=ON \
     -DBUILD_LIBREALSENSE=OFF \
     -DBUILD_PYTORCH_OPS=OFF \
     -DBUILD_REALSENSE=OFF \
     -DBUILD_SHARED_LIBS=ON \
     -DBUILD_TENSORFLOW_OPS=OFF \
+    -DBUILD_UNIT_TESTS=OFF \
     -DBUILD_WEBRTC=OFF \
     -DENABLE_HEADLESS_RENDERING=OFF \
     -DBUILD_JUPYTER_EXTENSION=OFF \
@@ -33,7 +46,7 @@ cmake ${SRC_DIR} ${CMAKE_ARGS} \
     -DUSE_SYSTEM_GLEW=ON \
     -DUSE_SYSTEM_GLFW=ON \
     -DUSE_SYSTEM_GOOGLETEST=ON \
-    -DUSE_SYSTEM_IMGUI=ON \
+    -DUSE_SYSTEM_IMGUI=OFF \
     -DUSE_SYSTEM_JPEG=ON \
     -DUSE_SYSTEM_JSONCPP=ON \
     -DUSE_SYSTEM_LIBLZF=ON \

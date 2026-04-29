@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: Open3D
   version: "0.19.0"
-  build_number: 103
+  build_number: 104
 
 package:
   name: ${{ name|lower }}
@@ -27,6 +27,11 @@ source:
         - 7335.patch
     - 7249.patch
     - fix-requirements-txt.patch
+    - fix-missing-memory-include.patch
+    - if: linux and aarch64
+      then:
+        - fix-filament.patch
+        - fix-filament-libstdcxx.patch
 
 build:
   number: ${{ build_number }}
@@ -39,16 +44,15 @@ requirements:
     - ${{ compiler('c') }}
     - ${{ stdlib("c") }}
     - ${{ compiler('cxx') }}
-    - cmake
+    - cmake <4
     - make
     - pkg-config
-    - if: osx
+    - git
+    - if: osx or (linux and aarch64)
       then: llvm-openmp
     - if: linux
       then: libgomp
   host:
-    - if: aarch64
-      then: libcxx >=7
     - if: linux
       then:
         - libgl-devel
@@ -57,6 +61,11 @@ requirements:
         - xorg-libxdamage
         - xorg-libxfixes
         - libxcb
+        - xorg-libx11
+        - clangdev
+        - libclang
+        - libcxx
+        - libcxxabi
     - setuptools
     - python
     - pip
@@ -82,6 +91,10 @@ requirements:
     - pybind11-abi
     - qhull
     - libtinyobjloader
+    - libvulkan-loader
+    - libvulkan-headers
+    - gtest
+    - gmock
     - if: not win
       then:
         - qhull-static
@@ -106,7 +119,7 @@ requirements:
         - vcomp14
     # TODO: Consider for the future
     # - libidn2  # [osx]
-    # - imgui      # Not used currently as we are not building the GUI
+    # - imgui      # TODO: Fails with error C2039: 'KeyMap': is not a member of 'ImGuiIO'
     # - tinygltf   # TODO: Does not export cmake config in conda-forge; see https://github.com/conda-forge/tinygltf-feedstock/issues/24
     # - pytorch
   run:
@@ -131,6 +144,7 @@ tests:
   - python:
       imports:
         - open3d
+        - open3d.visualization
       pip_check: true
   - script:
       - open3d --help
@@ -142,6 +156,7 @@ about:
     - LICENSE
     - if: win
       then: 3rdparty/curl/LICENSE
+    - 3rdparty/imgui/LICENSE
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas
