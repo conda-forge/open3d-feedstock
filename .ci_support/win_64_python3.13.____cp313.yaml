@@ -1,5 +1,5 @@
 assimp:
-- 6.0.3
+- '6'
 c_compiler:
 - vs2022
 c_stdlib:
@@ -17,7 +17,7 @@ glew:
 jsoncpp:
 - 1.9.6
 libboost_headers:
-- '1.88'
+- '1.90'
 libjpeg_turbo:
 - '3'
 liblzma_devel:
