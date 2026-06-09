@@ -57,7 +57,7 @@ qt6_main:
 target_platform:
 - linux-aarch64
 tbb_devel:
-- '2022'
+- '2023'
 vtk:
 - 9.6.1
 zeromq:

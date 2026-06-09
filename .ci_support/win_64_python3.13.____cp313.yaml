@@ -25,7 +25,7 @@ liblzma_devel:
 libpng:
 - '1.6'
 mkl_devel:
-- '2025'
+- '2026'
 msgpack_c:
 - '6'
 msgpack_cxx:
@@ -47,7 +47,7 @@ qt6_main:
 target_platform:
 - win-64
 tbb_devel:
-- '2022'
+- '2023'
 vtk:
 - 9.6.1
 zeromq:
