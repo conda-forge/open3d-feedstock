@@ -23,7 +23,7 @@ fmt:
 glew:
 - '2.3'
 jsoncpp:
-- 1.9.6
+- 1.9.7
 libboost_headers:
 - '1.90'
 libcblas:
