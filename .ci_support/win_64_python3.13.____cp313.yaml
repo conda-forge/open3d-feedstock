@@ -15,7 +15,7 @@ fmt:
 glew:
 - '2.3'
 jsoncpp:
-- 1.9.6
+- 1.9.7
 libboost_headers:
 - '1.90'
 libjpeg_turbo:
@@ -49,6 +49,6 @@ target_platform:
 tbb_devel:
 - '2023'
 vtk:
-- 9.6.1
+- 9.6.2
 zeromq:
 - 4.3.5
