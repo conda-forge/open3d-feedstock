@@ -111,7 +111,7 @@ requirements:
     - if: not win
       then: libcurl
     - if: win
-      then: libcurl 8.20
+      then: libcurl 8.20.*
     - if: not linux
       then: openssl
     - tbb-devel
