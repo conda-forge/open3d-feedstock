@@ -112,7 +112,6 @@ requirements:
       then: libcurl
     - if: win
       then:
-        - libcurl
         # Temporary pin, remove on next update
         - icu 78.3.* [build="*_1"]
     - if: not linux
