@@ -157,8 +157,6 @@ about:
   license: MIT
   license_file:
     - LICENSE
-    - if: win
-      then: 3rdparty/curl/LICENSE
     - 3rdparty/imgui/LICENSE
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
