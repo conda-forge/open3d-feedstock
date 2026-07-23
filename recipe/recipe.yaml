@@ -108,8 +108,7 @@ requirements:
     - libboost-headers
     - nanoflann
     - liblzf
-    - if: not win
-      then: libcurl
+    - libcurl
     - if: win
       then:
         # Temporary pin, remove on next update
