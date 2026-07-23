@@ -109,10 +109,6 @@ requirements:
     - nanoflann
     - liblzf
     - libcurl
-    - if: win
-      then:
-        # Temporary pin, remove on next update
-        - icu 78.3.* [build="*_1"]
     - if: not linux
       then: openssl
     - tbb-devel
