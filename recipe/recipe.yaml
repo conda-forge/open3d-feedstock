@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: Open3D
   version: "0.19.0"
-  build_number: 108
+  build_number: 109
 
 package:
   name: ${{ name|lower }}
@@ -145,6 +145,11 @@ tests:
         - open3d
         - open3d.visualization
       pip_check: true
+  - script:
+      - python test_metadata.py ${{ version }}
+    files:
+      recipe:
+        - test_metadata.py
   - script:
       - open3d --help
 

@@ -69,3 +69,19 @@ cmake ${SRC_DIR} ${CMAKE_ARGS} \
 cmake --build . --config Release -- -j$CPU_COUNT
 cmake --build . --config Release --target install
 cmake --build . --config Release --target install-pip-package
+
+if [[ "$target_platform" == "linux-64" ]]; then
+    cpu_metadata_dirs=("${SP_DIR}"/open3d_cpu-*.dist-info)
+    alias_metadata_dir="${SP_DIR}/open3d-${PKG_VERSION}.dist-info"
+
+    test "${#cpu_metadata_dirs[@]}" -eq 1
+    test -d "${cpu_metadata_dirs[0]}"
+    test ! -e "$alias_metadata_dir"
+    mkdir "$alias_metadata_dir"
+    cat >"${alias_metadata_dir}/METADATA" <<EOF
+Metadata-Version: 2.1
+Name: open3d
+Version: ${PKG_VERSION}
+EOF
+    printf 'cmake\n' >"${alias_metadata_dir}/INSTALLER"
+fi
