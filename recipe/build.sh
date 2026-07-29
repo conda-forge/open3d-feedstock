@@ -83,5 +83,5 @@ Metadata-Version: 2.1
 Name: open3d
 Version: ${PKG_VERSION}
 EOF
-    printf 'cmake\n' >"${alias_metadata_dir}/INSTALLER"
+    printf 'conda\n' >"${alias_metadata_dir}/INSTALLER"
 fi
