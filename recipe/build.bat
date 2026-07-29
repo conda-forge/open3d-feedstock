@@ -65,3 +65,13 @@ if errorlevel 1 exit 1
 
 cmake --build . --config Release --target install-pip-package
 if errorlevel 1 exit 1
+
+set "ALIAS_METADATA_DIR=%SP_DIR%\open3d_cpu-%PKG_VERSION%.dist-info"
+if exist "%ALIAS_METADATA_DIR%" exit 1
+mkdir "%ALIAS_METADATA_DIR%"
+(
+    echo Metadata-Version: 2.1
+    echo Name: open3d-cpu
+    echo Version: %PKG_VERSION%
+) >"%ALIAS_METADATA_DIR%\METADATA"
+>"%ALIAS_METADATA_DIR%\INSTALLER" echo conda

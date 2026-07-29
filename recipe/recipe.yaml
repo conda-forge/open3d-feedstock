@@ -146,10 +146,7 @@ tests:
         - open3d.visualization
       pip_check: true
   - script:
-      - python test_metadata.py ${{ version }}
-    files:
-      recipe:
-        - test_metadata.py
+      - python -c "from importlib.metadata import version; assert version('open3d'); assert version('open3d-cpu')"
   - script:
       - open3d --help
 
