@@ -28,6 +28,7 @@ source:
     - 7249.patch
     - fix-requirements-txt.patch
     - fix-missing-memory-include.patch
+    - fix-gcc15-missing-cstdint.patch
     - if: linux and aarch64
       then:
         - fix-filament.patch
