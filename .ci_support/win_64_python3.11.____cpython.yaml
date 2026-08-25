@@ -18,6 +18,8 @@ jsoncpp:
 - 1.9.8
 libboost_headers:
 - '1.90'
+libcurl:
+- '8'
 libjpeg_turbo:
 - '3'
 liblzma_devel:
@@ -43,12 +45,12 @@ python:
 qhull:
 - '2020.2'
 qt6_main:
-- '6.11'
+- '6'
 target_platform:
 - win-64
 tbb_devel:
 - '2023'
 vtk:
-- 9.6.2
+- 9.7.0
 zeromq:
 - 4.3.5
