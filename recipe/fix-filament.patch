@@ -2,7 +2,7 @@ diff --git a/3rdparty/filament/filament_build.cmake b/3rdparty/filament/filament
 index 432f55a28..08e179392 100644
 --- a/3rdparty/filament/filament_build.cmake
 +++ b/3rdparty/filament/filament_build.cmake
-@@ -56,16 +64,17 @@ ExternalProject_Add(
+@@ -56,19 +64,19 @@
      URL_HASH SHA256=00c3f41af0fcfb2df904e1f77934f2678d943ddac5eb889788a5e22590e497bd
      DOWNLOAD_DIR "${OPEN3D_THIRD_PARTY_DOWNLOAD_DIR}/filament"
      UPDATE_COMMAND ""
@@ -13,8 +13,8 @@ index 432f55a28..08e179392 100644
 +    #     ${CMAKE_CURRENT_LIST_DIR}/fix-werror.patch
      CMAKE_ARGS
          ${ExternalProject_CMAKE_ARGS}
-        -DCMAKE_BUILD_TYPE=${FILAMENT_BUILD_TYPE}
-        "-DCMAKE_CXX_FLAGS:STRING=${CMAKE_CXX_FLAGS} -stdlib=libstdc++"
+         -DCMAKE_BUILD_TYPE=${FILAMENT_BUILD_TYPE}
++        "-DCMAKE_CXX_FLAGS:STRING=${filament_cxx_flags} -stdlib=libstdc++ -include iterator -include cstdint -include limits -include cstring"
 -        -DCCACHE_PROGRAM=OFF  # Enables ccache, "launch-cxx" is not working.
          -DFILAMENT_ENABLE_JAVA=OFF
 -        -DCMAKE_C_COMPILER=${FILAMENT_C_COMPILER}
@@ -23,8 +23,12 @@ index 432f55a28..08e179392 100644
 -        -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
 -        -DCMAKE_CXX_FLAGS:STRING=${filament_cxx_flags}
          -DCMAKE_INSTALL_PREFIX=${FILAMENT_ROOT}
-        -DUSE_STATIC_CRT=${STATIC_WINDOWS_RUNTIME}
-        -DUSE_STATIC_LIBCXX=OFF
+         -DUSE_STATIC_CRT=${STATIC_WINDOWS_RUNTIME}
+-        -DUSE_STATIC_LIBCXX=ON
++        -DUSE_STATIC_LIBCXX=OFF
+         -DFILAMENT_SUPPORTS_VULKAN=OFF
+         -DFILAMENT_SKIP_SAMPLES=ON
+         -DFILAMENT_OPENGL_HANDLE_ARENA_SIZE_IN_MB=20 # to support many small entities
 diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
 index 13f6501c8..c4e0adb57 100644
 --- a/3rdparty/find_dependencies.cmake
