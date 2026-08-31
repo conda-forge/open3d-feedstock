@@ -32,7 +32,6 @@ source:
     - if: linux and aarch64
       then:
         - fix-filament.patch
-        - fix-filament-libstdcxx.patch
 
 build:
   number: ${{ build_number }}
