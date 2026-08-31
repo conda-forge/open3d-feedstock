@@ -2,7 +2,7 @@ diff --git a/3rdparty/filament/filament_build.cmake b/3rdparty/filament/filament
 index 432f55a28..08e179392 100644
 --- a/3rdparty/filament/filament_build.cmake
 +++ b/3rdparty/filament/filament_build.cmake
-@@ -56,16 +64,17 @@ ExternalProject_Add(
+@@ -56,17 +64,16 @@ ExternalProject_Add(
      URL_HASH SHA256=00c3f41af0fcfb2df904e1f77934f2678d943ddac5eb889788a5e22590e497bd
      DOWNLOAD_DIR "${OPEN3D_THIRD_PARTY_DOWNLOAD_DIR}/filament"
      UPDATE_COMMAND ""
