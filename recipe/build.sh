@@ -70,6 +70,15 @@ cmake --build . --config Release -- -j$CPU_COUNT
 cmake --build . --config Release --target install
 cmake --build . --config Release --target install-pip-package
 
+# open3d's wheel builder reads the platform tag from the build-time glibc
+# (gnu_get_libc_version), not from the sysroot, so the installed wheel is tagged
+# manylinux_2_39 while the real floor is __glibc >=2.17. Rewrite the Tag to the
+# sysroot baseline so pip introspection does not mark the package unsupported on
+# older glibc.
+for wheel in "${SP_DIR}"/open3d*.dist-info/WHEEL; do
+    sed -i -E 's/manylinux_[0-9]+_[0-9]+/manylinux_2_17/g' "$wheel"
+done
+
 if [[ "$target_platform" == "linux-64" ]]; then
     alias_name="open3d"
     alias_stem="open3d"
