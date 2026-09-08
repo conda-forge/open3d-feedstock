@@ -70,6 +70,20 @@ cmake --build . --config Release -- -j$CPU_COUNT
 cmake --build . --config Release --target install
 cmake --build . --config Release --target install-pip-package
 
+# open3d's wheel builder reads the platform tag from the build-time glibc
+# (gnu_get_libc_version), not from the sysroot, so the installed wheel is tagged
+# for the build host glibc while the real floor is __glibc >=${c_stdlib_version}.
+# Rewrite the Tag to the sysroot baseline (derived from the c_stdlib_version
+# variant) so pip introspection does not mark the package unsupported on older
+# glibc, and so the pin is tracked automatically when the floor is bumped.
+if [[ "$target_platform" == linux-* ]]; then
+    manylinux_tag="manylinux_${c_stdlib_version//./_}"
+    echo "Retagging open3d wheel platform tag to ${manylinux_tag} (c_stdlib_version=${c_stdlib_version})"
+    for wheel in "${SP_DIR}"/open3d*.dist-info/WHEEL; do
+        sed -i -E "s/manylinux_[0-9]+_[0-9]+/${manylinux_tag}/g" "$wheel"
+    done
+fi
+
 if [[ "$target_platform" == "linux-64" ]]; then
     alias_name="open3d"
     alias_stem="open3d"
