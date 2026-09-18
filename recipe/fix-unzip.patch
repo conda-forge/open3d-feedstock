@@ -1,15 +1,8 @@
---- a/cpp/open3d/utility/ExtractZIP.cpp	2024-01-05 11:44:03
-+++ b/cpp/open3d/utility/ExtractZIP.cpp	2024-01-05 11:44:13
-@@ -12,7 +12,7 @@
- 
- #include <errno.h>
- #include <stdio.h>
--#include <unzip.h>
-+#include <minizip/unzip.h>
- 
- #include <iostream>
- #include <string>
-@@ -43,7 +43,7 @@
+diff --git a/cpp/open3d/utility/ExtractZIP.cpp b/cpp/open3d/utility/ExtractZIP.cpp
+index bfc4a03..fb0900f 100644
+--- a/cpp/open3d/utility/ExtractZIP.cpp
++++ b/cpp/open3d/utility/ExtractZIP.cpp
+@@ -47,7 +47,7 @@ static int ExtractCurrentFile(unzFile uf,
      int err = UNZ_OK;
      FILE *fout = nullptr;
      void *buf;
@@ -18,7 +11,7 @@
  
      unz_file_info64 file_info;
      err = unzGetCurrentFileInfo64(uf, &file_info, filename_inzip,
-@@ -179,7 +179,7 @@
+@@ -183,7 +183,7 @@ void ExtractFromZIP(const std::string &file_path,
      // ExtractFromZIP supports password. Can be exposed if required in future.
      const std::string password = "";
  
@@ -27,4 +20,3 @@
          err = ExtractCurrentFile(uf, extract_dir, password);
          if (err != UNZ_OK) {
              // Close file, before throwing exception.
-

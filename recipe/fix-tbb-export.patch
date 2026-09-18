@@ -1,0 +1,12 @@
+diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
+index e16d104..6b81a94 100644
+--- a/3rdparty/find_dependencies.cmake
++++ b/3rdparty/find_dependencies.cmake
+@@ -2082,6 +2082,7 @@ else(OPEN3D_USE_ONEAPI_PACKAGES)
+     # used by utility::ProgressBar. Bundled TBB (mkl/tbb.cmake) is newer.
+     if(USE_SYSTEM_TBB)
+         open3d_find_package_3rdparty_library(3rdparty_tbb
++            PUBLIC
+             PACKAGE TBB
+             VERSION 2021.4.0
+             TARGETS TBB::tbb

@@ -14,24 +14,19 @@ source:
   sha256: 66a8ff94cf3f641d77a2b885ef7bdc8e7a4e6c0fa689458d559d3f6d771feef4
   patches:
     - fix-unzip.patch
-    - if: not win
-      then: fix-curl.patch
     - fix-error.patch
     - fix-find-imgui.patch
+    - fix-tbb-export.patch
     - if: osx
       then: fix-crypto.patch
     - if: win
       then:
         - fix-win-extractzip.patch
         - fix-win-minizip.patch
-        - 7335.patch
-    - 7249.patch
     - fix-requirements-txt.patch
     - fix-missing-memory-include.patch
-    - fix-gcc15-missing-cstdint.patch
-    - if: linux and aarch64
-      then:
-        - fix-filament.patch
+    - if: osx
+      then: fix-optional-metal-shaders.patch
 
 build:
   number: ${{ build_number }}
@@ -52,6 +47,7 @@ requirements:
     - ${{ compiler('cxx') }}
     - cmake <4
     - make
+    - glslang
     - pkg-config
     - git
     - if: osx or (linux and aarch64)
@@ -75,6 +71,13 @@ requirements:
     - setuptools
     - python
     - pip
+    # 0.20.0 generates typing stubs at build time via `python -m pybind11_stubgen`,
+    # which imports the freshly built open3d package, so its runtime imports
+    # (numpy, plotly, dash) must be available in the host environment too.
+    - pybind11-stubgen
+    - numpy
+    - plotly
+    - dash
     - assimp
     - libzlib
     - eigen
@@ -162,6 +165,12 @@ about:
   license_file:
     - LICENSE
     - 3rdparty/imgui/LICENSE
+    # Statically linked into libOpen3D.
+    - 3rdparty/filament/LICENSE
+    # Fetched by ExternalProject at build time, so these live under the build
+    # tree rather than the source tree (build.sh and build.bat both use `build`).
+    - build/spz/src/ext_spz/LICENSE
+    - build/zstd/src/ext_zstd/LICENSE
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas

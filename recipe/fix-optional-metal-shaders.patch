@@ -1,0 +1,59 @@
+diff --git a/cmake/Open3DAddComputeShaders.cmake b/cmake/Open3DAddComputeShaders.cmake
+index b50cb72..827488f 100644
+--- a/cmake/Open3DAddComputeShaders.cmake
++++ b/cmake/Open3DAddComputeShaders.cmake
+@@ -37,8 +37,27 @@ function(open3d_add_compute_shaders target)
+     file(MAKE_DIRECTORY ${OUTPUT_DIRECTORY_FULL_PATH})
+ 
+     find_program(OPEN3D_GLSLANG_VALIDATOR glslangValidator REQUIRED)
++    set(OPEN3D_BUILD_METAL_SHADERS OFF)
+     if (APPLE)
+-        find_program(OPEN3D_SPIRV_CROSS spirv-cross REQUIRED)
++        # spirv-cross and the Metal compiler are not part of every macOS
++        # toolchain (in particular, spirv-cross has no conda-forge package for
++        # osx-arm64 and the Metal toolchain is an optional Xcode component).
++        # Build the Metal variants of the compute shaders only when both tools
++        # are present; ComputeGPUMetal degrades gracefully when the metallib is
++        # absent at runtime.
++        find_program(OPEN3D_SPIRV_CROSS spirv-cross)
++        execute_process(COMMAND xcrun -sdk macosx -f metal
++                        OUTPUT_VARIABLE OPEN3D_METAL_COMPILER
++                        OUTPUT_STRIP_TRAILING_WHITESPACE
++                        ERROR_QUIET
++                        RESULT_VARIABLE OPEN3D_METAL_COMPILER_RESULT)
++        if (OPEN3D_SPIRV_CROSS AND OPEN3D_METAL_COMPILER_RESULT EQUAL 0)
++            set(OPEN3D_BUILD_METAL_SHADERS ON)
++        else()
++            message(WARNING "spirv-cross and/or the Metal compiler were not "
++                "found. The Gaussian splat Metal shaders will not be built and "
++                "Gaussian splat rendering will be unavailable at runtime.")
++        endif()
+         # For shaders that use subgroup arithmetic (gl_SubgroupSize, subgroupAdd, etc.).
+         # fixing the subgroup size to 32 (Apple Silicon SIMD width) lets the Metal compiler
+         # treat gl_SubgroupSize as a compile-time constant for loop unrolling.
+@@ -78,7 +97,7 @@ function(open3d_add_compute_shaders target)
+             MAIN_DEPENDENCY ${shader}
+             VERBATIM
+         )
+-        if (APPLE)
++        if (OPEN3D_BUILD_METAL_SHADERS)
+             file(GENERATE OUTPUT run_spirv_cross_${SHADER_BASENAME}.sh CONTENT 
+             "${OPEN3D_SPIRV_CROSS} \"${STAGED_SPIRV_FULL_PATH}\" --msl --msl-version 20400 --msl-decoration-binding ${SPIRV_CROSS_EXTRA_FLAGS} \
+             --rename-entry-point main ${SHADER_BASENAME}_main comp --output \"${STAGED_METAL_FULL_PATH}\" 
+@@ -96,14 +115,14 @@ function(open3d_add_compute_shaders target)
+         list(APPEND STAGED_COMPUTE_SHADERS
+             "${STAGED_SHADER_FULL_PATH}"
+             "${STAGED_SPIRV_FULL_PATH}")
+-        if (APPLE)
++        if (OPEN3D_BUILD_METAL_SHADERS)
+             list(APPEND STAGED_COMPUTE_SHADERS "${STAGED_METAL_FULL_PATH}")
+         endif()
+     endforeach()
+ 
+     # Bundle SPIRV-Cross MSL into a single Metal library for runtime loading
+     # (newLibraryWithFile / newLibraryWithData), avoiding newLibraryWithSource.
+-    if(APPLE AND GAUSSIAN_METAL_BASENAMES)
++    if(OPEN3D_BUILD_METAL_SHADERS AND GAUSSIAN_METAL_BASENAMES)
+         set(METALLIB_OUTPUT "${OUTPUT_DIRECTORY_FULL_PATH}/gaussian_splat.metallib")
+         set(METAL_AIR_FILES "")
+         foreach(BASE IN LISTS GAUSSIAN_METAL_BASENAMES)
