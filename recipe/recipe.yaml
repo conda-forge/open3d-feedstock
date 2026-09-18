@@ -2,8 +2,8 @@ schema_version: 1
 
 context:
   name: Open3D
-  version: "0.19.0"
-  build_number: 112
+  version: "0.20.0"
+  build_number: 0
 
 package:
   name: ${{ name|lower }}
@@ -11,7 +11,7 @@ package:
 
 source:
   url: https://github.com/isl-org/Open3D/archive/v${{ version }}.tar.gz
-  sha256: 5cedb0e093c6baceab801b903eb8e2558bc2b3999ac57762bf78a39d5e15394a
+  sha256: 66a8ff94cf3f641d77a2b885ef7bdc8e7a4e6c0fa689458d559d3f6d771feef4
   patches:
     - fix-unzip.patch
     - if: not win
