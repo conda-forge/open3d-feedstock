@@ -18,6 +18,12 @@ source:
     - fix-find-imgui.patch
     - fix-tbb-export.patch
     - fix-system-spz.patch
+    # isl-org/Open3D#7573 -- USE_SYSTEM_FILAMENT could not find conda-forge's
+    # Filament, did not request ktxreader, and skipped the macOS frameworks.
+    - fix-system-filament.patch
+    # isl-org/Open3D#7574 -- two fmt calls that only compile as C++17. Filament's
+    # imported targets require cxx_std_20, which raises Open3D's own sources.
+    - fix-fmt-cxx20.patch
     - if: linux
       then: fix-system-cblas.patch
     - if: osx
@@ -33,10 +39,6 @@ source:
 
 build:
   number: ${{ build_number }}
-  # Open3D 0.20.0 links Filament's prebuilt macOS binaries, and
-  # filament-v1.76.0-mac.tgz only contains lib/arm64 -- there is no x86_64
-  # slice, so libfilameshio.a and friends do not exist for this platform.
-  skip: target_platform == "osx-64"
   script:
     # Expose the sysroot glibc floor to build.sh so the installed wheel can be
     # retagged to the pinned baseline instead of a hardcoded manylinux version.
@@ -86,6 +88,7 @@ requirements:
     - plotly
     - dash
     - assimp
+    - filament
     - libzlib
     - eigen
     - embree
@@ -175,8 +178,6 @@ about:
   license_file:
     - LICENSE
     - 3rdparty/imgui/LICENSE
-    # Statically linked into libOpen3D.
-    - 3rdparty/filament/LICENSE
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas

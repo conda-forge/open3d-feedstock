@@ -32,6 +32,7 @@ cmake %SRC_DIR% ^
     -DUSE_SYSTEM_CURL=ON ^
     -DUSE_SYSTEM_EIGEN3=ON ^
     -DUSE_SYSTEM_EMBREE=ON ^
+    -DUSE_SYSTEM_FILAMENT=ON ^
     -DUSE_SYSTEM_FMT=ON ^
     -DUSE_SYSTEM_GLEW=ON ^
     -DUSE_SYSTEM_GLFW=ON ^
@@ -58,6 +59,17 @@ cmake %SRC_DIR% ^
     -DWITH_IPP=OFF ^
     -DPython3_EXECUTABLE=%PYTHON%
 if errorlevel 1 exit 1
+
+rem Open3D quietly falls back to a vendored Filament when the system package is
+rem not found, which would bundle it into Open3D.dll without its licence.
+if exist "filament" (
+  echo ERROR: Open3D fell back to a downloaded Filament instead of the system package
+  exit /b 1
+)
+if exist "filament-binaries" (
+  echo ERROR: Open3D built a vendored Filament instead of using the system package
+  exit /b 1
+)
 
 cmake --build . --config Release -- /m:%CPU_COUNT%
 if errorlevel 1 exit 1
