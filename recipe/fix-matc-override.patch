@@ -1,0 +1,18 @@
+diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
+index e16d104..3b482cd 100644
+--- a/3rdparty/find_dependencies.cmake
++++ b/3rdparty/find_dependencies.cmake
+@@ -1525,7 +1525,12 @@ if(BUILD_GUI)
+             LIBRARIES ${filament_LIBRARIES}
+             DEPENDS ext_filament
+         )
+-        set(FILAMENT_MATC "${FILAMENT_ROOT}/bin/matc")
++        # Allow the caller to supply matc. Filament's mac release ships an
++        # arm64-only matc, so an x86_64 macOS build cannot execute the bundled
++        # tool and needs to point at a host-native one instead.
++        if(NOT FILAMENT_MATC)
++            set(FILAMENT_MATC "${FILAMENT_ROOT}/bin/matc")
++        endif()
+         target_link_libraries(3rdparty_filament INTERFACE Open3D::3rdparty_threads ${CMAKE_DL_LIBS})
+         if(WIN32 AND NOT BUILD_FILAMENT_FROM_SOURCE AND
+            NOT FILAMENT_PRECOMPILED_ROOT)

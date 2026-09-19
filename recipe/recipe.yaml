@@ -21,7 +21,9 @@ source:
     - if: linux
       then: fix-system-cblas.patch
     - if: osx
-      then: fix-crypto.patch
+      then:
+        - fix-crypto.patch
+        - fix-matc-override.patch
     - if: win
       then:
         - fix-win-extractzip.patch
@@ -51,6 +53,10 @@ requirements:
     - cmake <4
     - make
     - glslang
+    # Host-native matc; see the FILAMENT_MATC note in build.sh. Pinned to the
+    # Filament version Open3D bundles so the .filamat format matches.
+    - if: target_platform == "osx-64"
+      then: filament 1.76.0.*
     - pkg-config
     - git
     - if: osx or (linux and aarch64)
