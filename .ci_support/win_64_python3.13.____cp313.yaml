@@ -32,6 +32,8 @@ msgpack_c:
 - '6'
 msgpack_cxx:
 - '7'
+numpy:
+- '2'
 openssl:
 - '3.5'
 pin_run_as_build:
