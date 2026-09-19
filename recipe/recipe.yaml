@@ -21,9 +21,7 @@ source:
     - if: linux
       then: fix-system-cblas.patch
     - if: osx
-      then:
-        - fix-crypto.patch
-        - fix-matc-override.patch
+      then: fix-crypto.patch
     - if: win
       then:
         - fix-win-extractzip.patch
@@ -35,6 +33,10 @@ source:
 
 build:
   number: ${{ build_number }}
+  # Open3D 0.20.0 links Filament's prebuilt macOS binaries, and
+  # filament-v1.76.0-mac.tgz only contains lib/arm64 -- there is no x86_64
+  # slice, so libfilameshio.a and friends do not exist for this platform.
+  skip: target_platform == "osx-64"
   script:
     # Expose the sysroot glibc floor to build.sh so the installed wheel can be
     # retagged to the pinned baseline instead of a hardcoded manylinux version.
@@ -53,10 +55,6 @@ requirements:
     - cmake <4
     - make
     - glslang
-    # Host-native matc; see the FILAMENT_MATC note in build.sh. Pinned to the
-    # Filament version Open3D bundles so the .filamat format matches.
-    - if: target_platform == "osx-64"
-      then: filament 1.76.0.*
     - pkg-config
     - git
     - if: osx or (linux and aarch64)

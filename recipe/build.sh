@@ -14,17 +14,7 @@ if [[ "$target_platform" == "linux-aarch64" ]]; then
     export LDFLAGS="${LDFLAGS//-flto=auto/} -fno-lto"
 fi
 
-# Filament's mac release ships an arm64-only matc, but the osx-64 builders are
-# x86_64, so the bundled tool dies with "Bad CPU type in executable" when the
-# .filamat materials are compiled. Use matc from the conda-forge filament build
-# dependency, pinned to the same Filament version Open3D bundles.
-FILAMENT_MATC_ARG=""
-if [[ "$target_platform" == "osx-64" ]]; then
-    FILAMENT_MATC_ARG="-DFILAMENT_MATC=${BUILD_PREFIX}/bin/matc"
-fi
-
 cmake ${SRC_DIR} ${CMAKE_ARGS} \
-    ${FILAMENT_MATC_ARG} \
     -DCLANG_LIBDIR=${PREFIX}/lib \
     -DFILAMENT_C_COMPILER=${CC} \
     -DFILAMENT_CXX_COMPILER=${CXX} \
