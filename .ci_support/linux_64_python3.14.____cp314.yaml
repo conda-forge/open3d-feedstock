@@ -67,3 +67,5 @@ zeromq:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
+zstd:
+- '1.5'

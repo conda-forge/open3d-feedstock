@@ -17,6 +17,9 @@ source:
     - fix-error.patch
     - fix-find-imgui.patch
     - fix-tbb-export.patch
+    - fix-system-spz.patch
+    - if: linux
+      then: fix-system-cblas.patch
     - if: osx
       then: fix-crypto.patch
     - if: win
@@ -114,6 +117,8 @@ requirements:
         - liblapack * *mkl
         - liblapacke * *mkl
         - mkl-devel
+    - spz
+    - zstd
     - libboost-headers
     - nanoflann
     - liblzf
@@ -143,7 +148,8 @@ requirements:
     - ${{ pin_subpackage('open3d', upper_bound='x.x.x') }}
   ignore_run_exports:
     from_package:
-      - libcblas
+      # libcblas is deliberately NOT ignored: fix-system-cblas.patch links
+      # libOpen3D against it on Linux, so its run export is a real dependency.
       - minizip
       - msgpack-c
       - msgpack-cxx
@@ -167,10 +173,6 @@ about:
     - 3rdparty/imgui/LICENSE
     # Statically linked into libOpen3D.
     - 3rdparty/filament/LICENSE
-    # Fetched by ExternalProject at build time, so these live under the build
-    # tree rather than the source tree (build.sh and build.bat both use `build`).
-    - build/spz/src/ext_spz/LICENSE
-    - build/zstd/src/ext_zstd/LICENSE
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas
