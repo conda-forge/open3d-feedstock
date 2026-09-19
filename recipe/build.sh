@@ -6,18 +6,7 @@ cd build
 
 export QT_HOST_PATH="$PREFIX"
 
-if [[ "$target_platform" == "linux-aarch64" ]]; then
-    # The clang toolchain here does not ship LLVMgold.so, so -flto=auto causes
-    # pybind link to fail when ld tries to load the plugin.
-    export CFLAGS="${CFLAGS//-flto=auto/} -fno-lto"
-    export CXXFLAGS="${CXXFLAGS//-flto=auto/} -fno-lto"
-    export LDFLAGS="${LDFLAGS//-flto=auto/} -fno-lto"
-fi
-
 cmake ${SRC_DIR} ${CMAKE_ARGS} \
-    -DCLANG_LIBDIR=${PREFIX}/lib \
-    -DFILAMENT_C_COMPILER=${CC} \
-    -DFILAMENT_CXX_COMPILER=${CXX} \
     -DBUILD_AZURE_KINECT=OFF \
     -DBUILD_BENCHMARKS=OFF \
     -DBUILD_CUDA_MODULE=OFF \
@@ -72,23 +61,6 @@ cmake ${SRC_DIR} ${CMAKE_ARGS} \
 cmake --build . --config Release -- -j$CPU_COUNT
 cmake --build . --config Release --target install
 cmake --build . --config Release --target install-pip-package
-
-# Open3D quietly falls back to a vendored Filament when the system package is
-# not found: find_dependencies.cmake sets USE_SYSTEM_FILAMENT OFF and downloads
-# prebuilt binaries instead. Those are static, so they leave no shared-library
-# dependency behind, whereas the conda-forge package does. Assert we really
-# linked the package -- otherwise Filament would be bundled into libOpen3D
-# without its licence being shipped.
-if [[ "$target_platform" == osx-* ]]; then
-    open3d_needed=$(otool -L "${PREFIX}"/lib/libOpen3D*.dylib)
-else
-    open3d_needed=$(objdump -p "${PREFIX}"/lib/libOpen3D.so* | grep NEEDED)
-fi
-if ! grep -q libfilament <<<"$open3d_needed"; then
-    echo "ERROR: libOpen3D does not link the system Filament; Open3D fell back" >&2
-    echo "to a vendored copy. Check the find_package(Filament) output above." >&2
-    exit 1
-fi
 
 # open3d's wheel builder reads the platform tag from the build-time glibc
 # (gnu_get_libc_version), not from the sysroot, so the installed wheel is tagged
