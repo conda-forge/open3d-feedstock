@@ -88,11 +88,12 @@ requirements:
     - plotly
     - dash
     - assimp
-    # Windows still uses the vendored Filament: Open3D's legacy visualizer
-    # calls bluegl::bind(), and conda-forge's filament deliberately keeps
-    # BlueGL static and unexported on Windows, so there is nothing to link.
-    - if: not win
-      then: filament
+    - filament
+    # Visualizer::InitOpenGL calls bluegl::bind(). Elsewhere BlueGL is a shared
+    # library and arrives through Filament::backend, but on Windows it is
+    # static and shipped separately.
+    - if: win
+      then: filament-bluegl-static
     - libzlib
     - eigen
     - embree
@@ -182,9 +183,6 @@ about:
   license_file:
     - LICENSE
     - 3rdparty/imgui/LICENSE
-    # Statically linked into Open3D.dll on Windows, which still vendors it.
-    - if: win
-      then: 3rdparty/filament/LICENSE
     - 3rdparty/uvatlas/LICENSE_directxheaders
     - 3rdparty/uvatlas/LICENSE_directxmath
     - 3rdparty/uvatlas/LICENSE_uvatlas
