@@ -42,6 +42,8 @@ msgpack_c:
 - '6'
 msgpack_cxx:
 - '7'
+numpy:
+- '2'
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -65,3 +67,5 @@ zeromq:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
+zstd:
+- '1.5'

@@ -2,8 +2,8 @@ schema_version: 1
 
 context:
   name: Open3D
-  version: "0.19.0"
-  build_number: 112
+  version: "0.20.0"
+  build_number: 0
 
 package:
   name: ${{ name|lower }}
@@ -11,27 +11,31 @@ package:
 
 source:
   url: https://github.com/isl-org/Open3D/archive/v${{ version }}.tar.gz
-  sha256: 5cedb0e093c6baceab801b903eb8e2558bc2b3999ac57762bf78a39d5e15394a
+  sha256: 66a8ff94cf3f641d77a2b885ef7bdc8e7a4e6c0fa689458d559d3f6d771feef4
   patches:
     - fix-unzip.patch
-    - if: not win
-      then: fix-curl.patch
     - fix-error.patch
     - fix-find-imgui.patch
+    - fix-tbb-export.patch
+    - fix-system-spz.patch
+    # isl-org/Open3D#7573 -- USE_SYSTEM_FILAMENT could not find conda-forge's
+    # Filament, did not request ktxreader, and skipped the macOS frameworks.
+    - fix-system-filament.patch
+    # isl-org/Open3D#7574 -- two fmt calls that only compile as C++17. Filament's
+    # imported targets require cxx_std_20, which raises Open3D's own sources.
+    - fix-fmt-cxx20.patch
+    - if: linux
+      then: fix-system-cblas.patch
     - if: osx
       then: fix-crypto.patch
     - if: win
       then:
         - fix-win-extractzip.patch
         - fix-win-minizip.patch
-        - 7335.patch
-    - 7249.patch
     - fix-requirements-txt.patch
     - fix-missing-memory-include.patch
-    - fix-gcc15-missing-cstdint.patch
-    - if: linux and aarch64
-      then:
-        - fix-filament.patch
+    - if: osx
+      then: fix-optional-metal-shaders.patch
 
 build:
   number: ${{ build_number }}
@@ -52,6 +56,7 @@ requirements:
     - ${{ compiler('cxx') }}
     - cmake <4
     - make
+    - glslang
     - pkg-config
     - git
     - if: osx or (linux and aarch64)
@@ -75,7 +80,20 @@ requirements:
     - setuptools
     - python
     - pip
+    # 0.20.0 generates typing stubs at build time via `python -m pybind11_stubgen`,
+    # which imports the freshly built open3d package, so its runtime imports
+    # (numpy, plotly, dash) must be available in the host environment too.
+    - pybind11-stubgen
+    - numpy
+    - plotly
+    - dash
     - assimp
+    - filament
+    # Visualizer::InitOpenGL calls bluegl::bind(). Elsewhere BlueGL is a shared
+    # library and arrives through Filament::backend, but on Windows it is
+    # static and shipped separately.
+    - if: win
+      then: filament-bluegl-static
     - libzlib
     - eigen
     - embree
@@ -111,6 +129,8 @@ requirements:
         - liblapack * *mkl
         - liblapacke * *mkl
         - mkl-devel
+    - spz
+    - zstd
     - libboost-headers
     - nanoflann
     - liblzf
@@ -140,7 +160,8 @@ requirements:
     - ${{ pin_subpackage('open3d', upper_bound='x.x.x') }}
   ignore_run_exports:
     from_package:
-      - libcblas
+      # libcblas is deliberately NOT ignored: fix-system-cblas.patch links
+      # libOpen3D against it on Linux, so its run export is a real dependency.
       - minizip
       - msgpack-c
       - msgpack-cxx

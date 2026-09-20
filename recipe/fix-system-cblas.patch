@@ -1,0 +1,22 @@
+diff --git a/3rdparty/find_dependencies.cmake b/3rdparty/find_dependencies.cmake
+index e16d104..5391d97 100644
+--- a/3rdparty/find_dependencies.cmake
++++ b/3rdparty/find_dependencies.cmake
+@@ -1951,6 +1951,17 @@ else(OPEN3D_USE_ONEAPI_PACKAGES)
+             find_package(LAPACKE)
+             if(BLAS_FOUND AND LAPACK_FOUND AND LAPACKE_FOUND)
+                 message(STATUS "System BLAS/LAPACK/LAPACKE found.")
++                # open3d/core/linalg includes <cblas.h> and calls cblas_sgemm /
++                # cblas_dgemm, but find_package(BLAS) only resolves the Fortran
++                # interface. In reference/netlib-style stacks the C interface is
++                # a separate library, so without this libOpen3D links clean and
++                # then fails at dlopen with "undefined symbol: cblas_dgemm".
++                # Apple's Accelerate and MKL both ship the C interface in the
++                # same library that find_package(BLAS) already returns.
++                if(UNIX AND NOT APPLE)
++                    find_library(CBLAS_LIBRARY NAMES cblas REQUIRED)
++                    list(APPEND BLAS_LIBRARIES ${CBLAS_LIBRARY})
++                endif()
+                 list(APPEND Open3D_3RDPARTY_PRIVATE_TARGETS_FROM_SYSTEM
+                     ${BLAS_LIBRARIES}
+                     ${LAPACK_LIBRARIES}

@@ -1,0 +1,27 @@
+diff --git a/cpp/open3d/t/geometry/Geometry.h b/cpp/open3d/t/geometry/Geometry.h
+index 54f3a74..eb841a0 100644
+--- a/cpp/open3d/t/geometry/Geometry.h
++++ b/cpp/open3d/t/geometry/Geometry.h
+@@ -8,6 +8,7 @@
+ #pragma once
+ 
+ #include <fmt/format.h>
++#include <fmt/ranges.h>
+ 
+ #include <string>
+ 
+diff --git a/cpp/open3d/t/geometry/TensorMap.cpp b/cpp/open3d/t/geometry/TensorMap.cpp
+index 7ca1091..5231061 100644
+--- a/cpp/open3d/t/geometry/TensorMap.cpp
++++ b/cpp/open3d/t/geometry/TensorMap.cpp
+@@ -164,8 +164,8 @@ std::string TensorMap::ToString() const {
+        << std::endl;
+     for (const std::string& key : keys) {
+         const core::Tensor& val = at(key);
+-        ss << fmt::format(tensor_format_str, key, val.GetShape().ToString(),
+-                          val.GetDtype().ToString(),
++        ss << fmt::format(fmt::runtime(tensor_format_str), key,
++                          val.GetShape().ToString(), val.GetDtype().ToString(),
+                           val.GetDevice().ToString());
+         if (key == primary_key) {
+             ss << " (primary)";
