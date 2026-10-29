@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: Open3D
   version: "0.20.0"
-  build_number: 0
+  build_number: 1
 
 package:
   name: ${{ name|lower }}
@@ -83,7 +83,9 @@ requirements:
     # 0.20.0 generates typing stubs at build time via `python -m pybind11_stubgen`,
     # which imports the freshly built open3d package, so its runtime imports
     # (numpy, plotly, dash) must be available in the host environment too.
-    - pybind11-stubgen
+    # 3.0.0 fails with "RuntimeError: dictionary changed size during iteration"
+    # while walking the open3d module.
+    - pybind11-stubgen <3
     - numpy
     - plotly
     - dash
@@ -152,6 +154,11 @@ requirements:
     - python
     - plotly
     - dash
+    # filament breaks its ABI in patch releases (1.77.2 dropped symbols that
+    # libOpen3D links against) and its run_export only pinned x.x until
+    # conda-forge/filament-feedstock#28; pin the patch version explicitly.
+    - if: not win
+      then: ${{ pin_compatible('filament', upper_bound='x.x.x') }}
     - if: win
       then:
         - libblas * *mkl
