@@ -56,6 +56,8 @@ python:
 - 3.14.* *_cp314
 qhull:
 - '2020.2'
+qt6_main:
+- '6.11'
 target_platform:
 - linux-64
 tbb_devel:
