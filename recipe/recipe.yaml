@@ -83,7 +83,9 @@ requirements:
     # 0.20.0 generates typing stubs at build time via `python -m pybind11_stubgen`,
     # which imports the freshly built open3d package, so its runtime imports
     # (numpy, plotly, dash) must be available in the host environment too.
-    - pybind11-stubgen
+    # 3.0.0 fails with "RuntimeError: dictionary changed size during iteration"
+    # while walking the open3d module.
+    - pybind11-stubgen <3
     - numpy
     - plotly
     - dash
