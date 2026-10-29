@@ -111,6 +111,7 @@ requirements:
     - msgpack-cxx
     - minizip
     - vtk
+    - qt6-main
     # Temporary: build against Qt 6.11.2 so the qt6-main run_export (>=6.11.2) stays
     # co-installable with pyside6 6.11.2, which requires qt6-main 6.11.2 exactly.
     # Drop once pyside6 6.11.3 is out (conda-forge/pyside2-feedstock#308).
