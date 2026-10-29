@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: Open3D
   version: "0.20.0"
-  build_number: 0
+  build_number: 1
 
 package:
   name: ${{ name|lower }}
@@ -152,6 +152,11 @@ requirements:
     - python
     - plotly
     - dash
+    # filament breaks its ABI in patch releases (1.77.2 dropped symbols that
+    # libOpen3D links against) and its run_export only pinned x.x until
+    # conda-forge/filament-feedstock#28; pin the patch version explicitly.
+    - if: not win
+      then: ${{ pin_compatible('filament', upper_bound='x.x.x') }}
     - if: win
       then:
         - libblas * *mkl
