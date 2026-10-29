@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/amd64
 assimp:
 - '6'
 c_compiler:
@@ -54,8 +56,6 @@ python:
 - 3.11.* *_cpython
 qhull:
 - '2020.2'
-qt6_main:
-- '6'
 target_platform:
 - linux-64
 tbb_devel:
