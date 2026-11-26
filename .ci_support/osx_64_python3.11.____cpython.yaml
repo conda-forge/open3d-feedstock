@@ -37,13 +37,15 @@ liblapacke:
 libpng:
 - '1.6'
 llvm_openmp:
-- '21'
+- '22'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 msgpack_c:
 - '6'
 msgpack_cxx:
 - '7'
+nanoflann:
+- 2.0.2
 numpy:
 - '2'
 openssl:
@@ -65,7 +67,7 @@ target_platform:
 tbb_devel:
 - '2023'
 vtk:
-- 9.7.0
+- 9.7.2
 zeromq:
 - 4.3.5
 zip_keys:
