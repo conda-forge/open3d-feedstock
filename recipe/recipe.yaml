@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: Open3D
   version: "0.20.0"
-  build_number: 4
+  build_number: 5
 
 package:
   name: ${{ name|lower }}
@@ -24,6 +24,10 @@ source:
     # isl-org/Open3D#7574 -- two fmt calls that only compile as C++17. Filament's
     # imported targets require cxx_std_20, which raises Open3D's own sources.
     - fix-fmt-cxx20.patch
+    # isl-org/Open3D#7636 (conda-forge/open3d-feedstock#81) -- Open3D writes
+    # RGBA colors into float3 "baseColor" uniforms; Filament now rejects that
+    # with a precondition failure as soon as an Open3DScene is created.
+    - fix-filament-float3-color.patch
     - if: linux
       then: fix-system-cblas.patch
     - if: osx
